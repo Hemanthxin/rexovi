@@ -248,3 +248,22 @@
   line-height: 1.6;
   background: rgba(255,255,255,.5);
 }
+
+@media (max-width: 620px) {
+  /* Full-width primary action, and the note above it rather than beside. */
+  .formFoot { flex-direction: column; align-items: stretch; gap: 12px; }
+  .formFoot .btn, .formFoot button[type="submit"] { width: 100%; justify-content: center; }
+  .footNote {
+    max-width: none;
+    font-size: .688rem;
+    letter-spacing: .08em;
+    text-transform: none;
+    order: 2;
+  }
+  .formTop, .panelHead { font-size: .688rem; }
+  .contactKey, .specKey { font-size: .688rem; }
+  .typeChip { padding: .62em 1em; }
+  .label { font-size: .688rem; }
+  .stepRow { font-size: .969rem; padding: 13px 0; }
+  .stepRow b { font-size: .688rem; }
+}

@@ -310,3 +310,10 @@
   .mod:nth-child(n + 3) { display: none; }
   .stageInner { transform: none; }
 }
+
+@media (max-width: 760px) {
+  .trust { font-size: .719rem; gap: 8px 18px; }
+  .floatMeta { font-size: .625rem; }
+  .floatName { font-size: .813rem; }
+  .marqueeItem { font-size: .719rem; }
+}

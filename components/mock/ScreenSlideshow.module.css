@@ -77,3 +77,14 @@
 @media (prefers-reduced-motion: reduce) {
   .slide { transition: none; }
 }
+
+@media (max-width: 760px), (pointer: coarse) {
+  /* No hover on touch: without this the dots are invisible, so nobody
+     discovers there is a second screen. */
+  .dots { opacity: 1; }
+  .dot { width: 6px; height: 6px; }
+  .dot[data-on="true"] { width: 18px; }
+  /* Expand the tap area beyond the painted dot. */
+  .dot { position: relative; }
+  .dot::after { content: ""; position: absolute; inset: -14px -6px; }
+}

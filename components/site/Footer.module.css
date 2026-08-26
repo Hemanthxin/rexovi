@@ -147,3 +147,19 @@
   .grid { grid-template-columns: repeat(2, minmax(0, 1fr)); gap: 32px 24px; }
   .bottom { justify-content: flex-start; }
 }
+
+@media (max-width: 760px) {
+  /* 24px rows are hard to hit; 40px is comfortable without looking spaced out. */
+  .col a { padding-block: 8px; font-size: 1rem; }
+  .col ul { gap: 2px; }
+  .colTitle { font-size: .75rem; }
+  .status { font-size: .75rem; padding: .55em 1em; }
+  .bottom { font-size: .719rem; line-height: 1.7; }
+  .social a { width: 42px; height: 42px; }
+}
+
+@media (max-width: 760px) {
+  /* A one-character label like "X" is a tiny target unless the row fills. */
+  .col a { width: 100%; }
+  .tagInline { font-size: .625rem; }
+}

@@ -145,3 +145,10 @@
   .node { scroll-snap-align: start; }
   .node:first-child { border-left: 0; padding-left: 0; }
 }
+
+@media (max-width: 900px) {
+  /* Keeps the first principle card off the screen edge — see the note on
+     scroll-padding in globals.css. */
+  .track { scroll-padding-inline: var(--gutter); }
+  .nodeBody { font-size: 1rem; }
+}

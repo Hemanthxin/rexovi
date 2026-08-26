@@ -316,3 +316,10 @@
   .vFlowDot { width: 26px; height: 26px; }
   .vFlowLabel { font-size: .5rem; letter-spacing: .06em; }
 }
+
+@media (max-width: 760px) {
+  .point { font-size: .688rem; padding: .34em .78em; }
+  .vFlowLabel { font-size: .625rem; }
+  .vFlowDot { font-size: .688rem; }
+  .body { font-size: 1rem; }
+}

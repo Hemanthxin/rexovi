@@ -236,3 +236,11 @@
   .stageInner { transform: none; }
   .showcase { padding-bottom: 44px; }
 }
+
+@media (max-width: 760px) {
+  .uiCardTop { font-size: .688rem; }
+  .uiCardNote { font-size: .75rem; }
+  .pillarIdx { font-size: .688rem; }
+  .fact { font-size: .813rem; }
+  .fact dt { font-size: .688rem; }
+}

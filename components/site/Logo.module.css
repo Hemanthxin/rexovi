@@ -64,3 +64,8 @@
   opacity: .8;
   flex: none;
 }
+
+@media (max-width: 760px) {
+  .sub { font-size: .625rem; letter-spacing: .28em; }
+  .tagline { font-size: .688rem; }
+}

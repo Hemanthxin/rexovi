@@ -140,3 +140,31 @@
 /* Compact rail variant used on the homepage */
 .card[data-variant="rail"] .meta { padding: 14px 16px 16px; gap: 8px; }
 .card[data-variant="rail"] .tagline { font-size: .844rem; }
+
+@media (max-width: 760px) {
+  .cat, .stamp, .foot { font-size: .688rem; }
+  .tagline { font-size: .938rem; }
+  .name { font-size: 1.2rem; }
+  /* Touch has no hover, so the actions have to be permanently visible. Rather
+     than darken the artwork with a scrim, drop them out of the overlay and let
+     them sit under the preview — the design stays fully readable. */
+  .overlay {
+    position: static;
+    opacity: 1;
+    background: none;
+    padding: 12px 0 0;
+    gap: 8px;
+  }
+  .act {
+    opacity: 1;
+    transform: none;
+    flex: 1;
+    justify-content: center;
+    padding: .8em 1em;
+    background: var(--paper-pure);
+    border: 1px solid var(--line);
+  }
+  .actSolid { background: var(--accent); border-color: var(--accent); color: #fff; }
+  .shot[data-dark="true"] .act { background: rgba(255,255,255,.08); border-color: rgba(255,255,255,.2); color: #fff; }
+  .shot[data-dark="true"] .actSolid { background: var(--accent); border-color: var(--accent); }
+}

@@ -163,3 +163,10 @@
   .actions > * { flex: 1; justify-content: center; }
   .corner { width: 12px; height: 12px; }
 }
+
+@media (max-width: 760px) {
+  .briefKey { font-size: .688rem; }
+  .briefVal { font-size: .938rem; }
+  .briefTop, .briefFoot { font-size: .688rem; }
+  .meta { font-size: .719rem; line-height: 1.7; }
+}

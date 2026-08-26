@@ -174,3 +174,19 @@
   .rail::-webkit-scrollbar { display: none; }
   .rail > * { scroll-snap-align: start; }
 }
+
+@media (max-width: 760px) {
+  .rail { scroll-padding-inline: var(--gutter); }
+  .cats { scroll-padding-inline: 0; }
+
+  /* 26px is not a tappable input. */
+  .search { padding: 13px 16px; }
+  .search input { font-size: 1rem; }
+  .cat { padding: .68em 1em; font-size: .906rem; }
+  .clear { width: 26px; height: 26px; }
+  .count { font-size: .75rem; }
+}
+
+@media (max-width: 760px) {
+  .search input { min-height: 30px; }
+}

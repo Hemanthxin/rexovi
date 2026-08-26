@@ -489,3 +489,32 @@ h1, h2, h3, h4, h5 {
 @media (max-width: 880px) {
   .page-head__grid { grid-template-columns: 1fr; align-items: start; }
 }
+
+/* ---------- 14. Mobile refinements ---------- */
+
+/* With `scroll-snap-type`, the browser aligns the first item to the scrollport
+   edge and scrolls straight past the container's own padding — which visually
+   deletes the leading gutter. `scroll-padding` moves the snap edge inward so
+   the gutter survives. */
+.hscroll { scroll-padding-inline: var(--gutter); }
+
+@media (max-width: 760px), (pointer: coarse) {
+  /* Inline links are ~27px tall, well under a comfortable touch target.
+     Expand the hit area without shifting the underline. */
+  .tlink { position: relative; }
+  .tlink::after {
+    content: "";
+    position: absolute;
+    inset: -11px -8px;
+  }
+
+  /* Same for small pill buttons that sit alone in a row. */
+  .btn--sm { padding-block: .78em; }
+}
+
+@media (max-width: 760px) {
+  /* Uppercase mono at 9-10px is legible on a desktop monitor and not on a
+     phone. Lift the floor for the metadata labels. */
+  .label { font-size: .75rem; }
+  .chip { font-size: .75rem; padding: .4em .8em; }
+}

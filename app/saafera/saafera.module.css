@@ -209,3 +209,11 @@
 .bandCopy { display: grid; gap: 8px; }
 .bandTitle { font-size: clamp(1.4rem, 2.4vw, 2rem); letter-spacing: -.03em; }
 .bandNote { color: var(--muted); font-size: .969rem; max-width: 52ch; }
+
+@media (max-width: 760px) {
+  .heroChip { font-size: .688rem; padding: 8px 12px; }
+  .factStrip { font-size: .719rem; gap: 12px 22px; }
+  .motto { font-size: .75rem; letter-spacing: .16em; }
+  .pillarIdx { font-size: .688rem; }
+  .bandInner > a { width: 100%; justify-content: center; }
+}

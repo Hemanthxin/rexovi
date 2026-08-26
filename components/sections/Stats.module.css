@@ -77,3 +77,8 @@
   .item:nth-child(1), .item:nth-child(2) { border-top: 0; }
   .item:nth-child(odd) { border-left: 0; padding-left: 0; }
 }
+
+@media (max-width: 760px) {
+  .note { font-size: .688rem; }
+  .caption { font-size: .719rem; line-height: 1.7; }
+}
