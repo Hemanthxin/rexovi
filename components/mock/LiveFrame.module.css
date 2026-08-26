@@ -1,11 +1,21 @@
 .box {
   position: relative;
   width: 100%;
+  /* Set inline from the design viewport, so a phone frame can embed a narrow one. */
   aspect-ratio: 16 / 10;
   overflow: hidden;
   background: #fff;
   /* Set by ResizeObserver; the fallback keeps SSR output sane. */
   --s: 0.24;
+}
+
+/* Inside a browser or phone frame the parent already owns the ratio, so
+   the box just fills it rather than declaring one of its own. */
+.fill {
+  position: absolute;
+  inset: 0;
+  width: auto;
+  aspect-ratio: auto !important;
 }
 
 /* A soft shimmer until the frame paints, so the card never flashes empty. */

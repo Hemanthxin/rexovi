@@ -1,15 +1,17 @@
 import Link from "next/link";
 import BrowserFrame from "@/components/mock/BrowserFrame";
 import PhoneFrame from "@/components/mock/PhoneFrame";
-import SitePreview from "@/components/mock/SitePreview";
+import LiveFrame from "@/components/mock/LiveFrame";
 import { SaaferaMobile } from "@/components/mock/SaaferaPreview";
 import Reveal from "@/components/site/Reveal";
 import { ArrowRight } from "@/components/site/Icons";
 import { services, type ServiceVisual as VisualKind } from "@/lib/content";
 import s from "./Services.module.css";
 
-const websitePalette = { bg: "#FFFFFF", ink: "#16181C", acc: "#F47B20", soft: "#F4F2ED", mut: "#CFCBC3", line: "#E8E5DE" };
-const appPalette = { bg: "#FFFFFF", ink: "#101820", acc: "#F47B20", soft: "#F3F1EC", mut: "#CBC7BF", line: "#E7E4DD" };
+/* A phone frame is 9:18, so the embedded site lays out at a real phone width
+   and renders its own mobile design rather than a squeezed desktop one. */
+const PHONE_W = 400;
+const PHONE_H = 800;
 
 const AREA: Record<string, string> = {
   websites: "aWebsites",
@@ -29,8 +31,8 @@ function Visual({ kind }: { kind: VisualKind }) {
         <div className={`${s.vBrowser} pv-hover`}>
           <span className={s.vBrowserBack} aria-hidden />
           <div className={s.vBrowserFront}>
-            <BrowserFrame url="client-site.com" ratio="16 / 9" sheen>
-              <SitePreview layout="agency" palette={websitePalette} label="Marketing website layout preview" />
+            <BrowserFrame url="lumina.studio" ratio="16 / 10" sheen>
+              <LiveFrame fill src="/preview/lumina" title="Lumina, a marketing site we built" />
             </BrowserFrame>
           </div>
         </div>
@@ -64,7 +66,13 @@ function Visual({ kind }: { kind: VisualKind }) {
       return (
         <div className={s.vPhones}>
           <PhoneFrame className={s.vPhoneA} ratio="9 / 18">
-            <SitePreview layout="shop" palette={appPalette} label="Mobile commerce screen preview" />
+            <LiveFrame
+              fill
+              src="/preview/medora"
+              title="Medora on a phone"
+              designWidth={PHONE_W}
+              designHeight={PHONE_H}
+            />
           </PhoneFrame>
           <PhoneFrame className={s.vPhoneB} ratio="9 / 18">
             <SaaferaMobile />

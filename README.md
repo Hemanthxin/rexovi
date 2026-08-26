@@ -215,6 +215,11 @@ templates/
     Medora.tsx
     MedoraInteractive.tsx   booking flow, filters, locations, text size
     medora.module.css
+  travella/
+    content.ts
+    Travella.tsx
+    TravellaInteractive.tsx itinerary scrubber, trip finder, cost estimator
+    travella.module.css
 public/templates/<slug>/    photography used by that template
 ```
 
@@ -226,6 +231,7 @@ public/templates/<slug>/    photography used by that template
 | Nexora | `/preview/nexora` | Dark developer platform — bento grid, code surfaces, install copy, seat slider, photography |
 | Lumina | `/preview/lumina` | Editorial studio — warm paper, oversized type, cursor-tracking work index, drag-to-compare grade slider |
 | Medora | `/preview/medora` | Healthcare — calm teal, large targets, four-step booking flow, doctor filters, clinic switcher, text-size control |
+| Travella | `/preview/travella` | Travel operator — sun-bleached sand and saffron, day-by-day itinerary scrubber over an altitude profile, trip finder, boarding-pass cost estimator |
 
 They share no styling on purpose: the point of the library is that two templates
 can look nothing alike. All demo data is for fictional companies.
@@ -240,6 +246,28 @@ The marketplace card then swaps its **Preview** button from the detail modal to 
 site; templates without one keep the modal. `livePreview` is a plain data flag rather than
 a registry lookup on purpose — the cards are client components, and importing the registry
 would pull every template site into the browser bundle.
+
+### Where the built sites are shown
+
+Nothing on the marketing site draws a fake screenshot any more. `LiveFrame`
+(`components/mock/LiveFrame.tsx`) embeds a real `/preview/<slug>` page in an inert,
+lazily-loaded iframe and scales it to fit its container, so a preview can never drift
+out of sync with the template it claims to show.
+
+| Surface | Shows |
+|---|---|
+| Marketplace card | its own template, when `livePreview` is set |
+| Selected work | `previewSlug` on the item in `lib/content.ts` — Finora, Travella, Nexora |
+| Services (Websites) | Lumina at desktop width |
+| Services (Mobile) | Medora at 400 px, so it renders its own mobile layout |
+| Saafera | real product screenshots, not an iframe |
+
+The frame is inert by design: `pointer-events: none`, `tabIndex={-1}`, `aria-hidden`,
+no scrolling. Pass `fill` when the parent (a browser or phone frame) already owns the
+aspect ratio; otherwise it declares one from `designWidth`/`designHeight`.
+
+The scale factor has to come from JS — CSS cannot divide a container width by a fixed
+pixel width to produce the unitless number `scale()` needs.
 
 ### Two rules worth keeping
 
@@ -268,6 +296,16 @@ stylesheet as a modifier class, never inline.
 **Leave room for the burger.** The same overflow was compounded by the header keeping a
 full-width CTA next to the menu button. Below 620px the header now shows the menu only;
 the drawer and the hero both carry the primary action.
+
+**`rem` does not follow a template's font size.** Travella sets `font-size: 17px` on
+`.site`, but `rem` still resolves against the root element — `.64rem` came out at 10.2px,
+not 10.9px, and three labels fell under the 11px floor. Size small text in `rem` only if
+you have checked it against the root, or use `em` to inherit the local scale.
+
+**A reveal observer cannot see sideways.** The Why section becomes a horizontal carousel
+below 900px, and the cards off-screen to the right never intersected the viewport, so they
+sat at opacity 0 — a peeking card reads as the end of the list rather than as more to come.
+In carousel mode the track reveals as one unit instead of card by card.
 
 ### Responsive images that only exist at one breakpoint
 

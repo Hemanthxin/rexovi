@@ -163,6 +163,7 @@ export const templates: TemplateItem[] = [
   },
   {
     slug: "travella",
+    livePreview: true,
     name: "Travella",
     category: "Travel",
     tagline: "Travel website",

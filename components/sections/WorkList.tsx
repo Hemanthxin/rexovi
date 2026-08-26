@@ -2,6 +2,7 @@ import Link from "next/link";
 import BrowserFrame from "@/components/mock/BrowserFrame";
 import PhoneFrame from "@/components/mock/PhoneFrame";
 import SitePreview from "@/components/mock/SitePreview";
+import LiveFrame from "@/components/mock/LiveFrame";
 import { SAAFERA_DESKTOP_RATIO, SaaferaDesktop, SaaferaMobile } from "@/components/mock/SaaferaPreview";
 import Reveal from "@/components/site/Reveal";
 import { ArrowRight, ArrowUpRight } from "@/components/site/Icons";
@@ -49,12 +50,19 @@ function Visual({ item }: { item: WorkItem }) {
 
   const v = visuals[item.visual];
 
+  /* A built site renders itself; the rest fall back to a drawn placeholder. */
+  const surface = item.previewSlug ? (
+    <LiveFrame fill src={`/preview/${item.previewSlug}`} title={`${item.title} interface`} />
+  ) : (
+    <SitePreview layout={v.layout} palette={v.palette} label={`${item.title} interface preview`} />
+  );
+
   if (item.layout === "device") {
     return (
       <div className={s.devicePair}>
         <div className={`${s.frameWrap} pv-hover`}>
-          <BrowserFrame url={v.url} ratio="16 / 10" tone={v.tone ?? "paper"} sheen>
-            <SitePreview layout={v.layout} palette={v.palette} label={`${item.title} web interface preview`} />
+          <BrowserFrame url={v.url} ratio="16 / 10" tone={item.previewSlug ? "paper" : v.tone ?? "paper"} sheen>
+            {surface}
           </BrowserFrame>
         </div>
         <PhoneFrame className={s.devicePhone}>
@@ -66,8 +74,8 @@ function Visual({ item }: { item: WorkItem }) {
 
   return (
     <div className={`${s.frameWrap} pv-hover`}>
-      <BrowserFrame url={v.url} ratio="16 / 10" tone={v.tone ?? "paper"} sheen>
-        <SitePreview layout={v.layout} palette={v.palette} label={`${item.title} interface preview`} />
+      <BrowserFrame url={v.url} ratio="16 / 10" tone={item.previewSlug ? "paper" : v.tone ?? "paper"} sheen>
+        {surface}
       </BrowserFrame>
     </div>
   );

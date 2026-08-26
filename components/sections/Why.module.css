@@ -152,3 +152,11 @@
   .track { scroll-padding-inline: var(--gutter); }
   .nodeBody { font-size: 1rem; }
 }
+
+@media (max-width: 900px) {
+  /* In carousel mode the later cards sit off-screen to the right, where the
+     reveal observer never intersects them — a card peeking at the edge with
+     opacity 0 reads as the end of the list rather than as more to come. The
+     track reveals as one unit here instead of card by card. */
+  :global(html.js) .track :global(.reveal) { opacity: 1; transform: none; }
+}

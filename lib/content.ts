@@ -163,6 +163,11 @@ export interface WorkItem {
   summary: string;
   tags: string[];
   visual: WorkVisual;
+  /**
+   * Slug of a built site under /preview. When present the portfolio card
+   * embeds the real thing instead of a drawn placeholder.
+   */
+  previewSlug?: string;
   layout: "full" | "split" | "device";
   flagship?: boolean;
   href?: string;
@@ -193,6 +198,7 @@ export const work: WorkItem[] = [
       "A data-dense financial interface built around clarity: dense information presented without noise.",
     tags: ["Dashboard", "Data", "Web app"],
     visual: "finance",
+    previewSlug: "finora",
     layout: "split",
   },
   {
@@ -205,6 +211,7 @@ export const work: WorkItem[] = [
       "A booking and discovery experience designed once and carried consistently across web and mobile.",
     tags: ["Web", "Mobile", "Booking"],
     visual: "travel",
+    previewSlug: "travella",
     layout: "device",
   },
   {
@@ -217,6 +224,7 @@ export const work: WorkItem[] = [
       "A multi-role SaaS platform structured to grow — modular surfaces, predictable patterns, room to scale.",
     tags: ["SaaS", "Multi-role", "Architecture"],
     visual: "platform",
+    previewSlug: "nexora",
     layout: "split",
   },
 ];
