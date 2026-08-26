@@ -128,6 +128,7 @@ export const templates: TemplateItem[] = [
     layout: "agency",
     palette: { bg: "#FBF7F0", ink: "#17150F", acc: "#E2552F", soft: "#F1EAE0", mut: "#CFC4B4", line: "#E7DFD2" },
     featured: true,
+    livePreview: true,
   },
   {
     slug: "medora",

@@ -204,7 +204,13 @@ templates/
     NexoraHeader.tsx
     NexoraInteractive.tsx   install copy, product tabs, filter, seat slider
     nexora.module.css
-public/templates/nexora/    photography used by that template
+  lumina/
+    content.ts
+    Lumina.tsx
+    LuminaHeader.tsx
+    LuminaInteractive.tsx   cursor-tracking index, grade slider, accordion
+    lumina.module.css
+public/templates/<slug>/    photography used by that template
 ```
 
 **Built so far:**
@@ -213,6 +219,7 @@ public/templates/nexora/    photography used by that template
 |---|---|---|
 | Finora | `/preview/finora` | Light corporate fintech — dashboard hero, uniform card grid, billing toggle |
 | Nexora | `/preview/nexora` | Dark developer platform — bento grid, code surfaces, install copy, seat slider, photography |
+| Lumina | `/preview/lumina` | Editorial studio — warm paper, oversized type, cursor-tracking work index, drag-to-compare grade slider |
 
 They share no styling on purpose: the point of the library is that two templates
 can look nothing alike. All demo data is for fictional companies.
@@ -245,9 +252,21 @@ if hydration fails. Each template gates the hidden state on `:global(html.js)` �
 class the root layout sets before first paint — so without JavaScript every section
 renders fully visible.
 
+### Responsive images that only exist at one breakpoint
+
+Lumina's work index shows a cursor-following preview on desktop and a thumbnail
+inside each row on mobile. The thumbnails are **mounted conditionally** via a
+`useSyncExternalStore` media-query hook rather than hidden with `display: none`:
+
+- Hidden with CSS, desktop still ships six `<img>` elements. With `loading="lazy"`
+  they never fetch (fine), but with `eager` they would download six pictures nobody
+  sees.
+- Mounted conditionally, desktop carries **3 images instead of 9**, and mobile can
+  load its six eagerly — they are the section's main visual there and total ~80 KB.
+
 ### Imagery
 
-Nexora ships three photographs in `public/templates/nexora/`, sourced from Unsplash
+Nexora and Lumina ship photography under `public/templates/<slug>/`, sourced from Unsplash
 (the Unsplash License permits commercial use without attribution) and re-encoded to
 WebP at ~180 KB total. **Swap them for your own or client-licensed photography before
 selling a template.**
