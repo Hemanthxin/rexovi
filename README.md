@@ -14,10 +14,13 @@ Saafera's own.
 
 ```bash
 npm install
+cp .env.example .env.local   # add your Neon connection string
+npm run db:migrate           # create the enquiries table
 npm run dev      # http://localhost:3000
 npm run build    # production build (all routes prerender statically)
 npm start        # serve the production build
 npm run lint
+npm run db:enquiries         # read submitted briefs in the terminal
 ```
 
 ---
@@ -181,6 +184,66 @@ all update from it.
 
 ---
 
+## Database — Neon Postgres
+
+The contact form writes to Neon. Everything else on the site is still static.
+
+### Setup
+
+```bash
+cp .env.example .env.local     # paste the POOLED connection string
+npm run db:migrate             # idempotent, safe to re-run
+```
+
+Use the **pooled** endpoint (host contains `-pooler`). Serverless invocations are
+short-lived and would exhaust a direct connection pool.
+
+### Schema
+
+`enquiries` — one row per submitted brief.
+
+| column | notes |
+|---|---|
+| `id`, `created_at` | identity + `now()` |
+| `name`, `email`, `message` | required, length-capped server side |
+| `company`, `budget`, `template_slug` | optional; the slug is validated against the published catalogue |
+| `project_types` | `text[]` |
+| `source_path` | which URL the brief came from, so `?template=…` attribution survives |
+| `ip_hash` | SHA-256 of address + salt. Enough to rate-limit, not enough to identify anyone |
+| `user_agent`, `status` | `status` is one of new / read / replied / archived / spam |
+
+### The endpoint
+
+`POST /api/enquiry` ([route.ts](app/api/enquiry/route.ts)) — the only dynamic route on
+the site. It:
+
+- **validates server side** and returns `422` with per-field errors, which the form renders
+  against the right inputs. Client validation is a convenience, never the gate.
+- **rate-limits** to 4 briefs per hour per hashed client, counted in SQL rather than memory
+  so it survives across serverless instances. Over the cap returns `429`.
+- **traps bots** with a hidden `website` honeypot. A filled field returns `200 OK` and
+  writes nothing, so a scraper gets no signal to tune against.
+- **never leaks connection details** — errors are logged server side and the browser gets a
+  generic message.
+
+If the request fails for any reason, the form falls back to a pre-composed `mailto:` link
+so a brief is never lost.
+
+### Reading briefs
+
+```bash
+npm run db:enquiries           # latest 20
+npm run db:enquiries -- 50     # latest 50
+npm run db:enquiries -- 20 new # unread only
+```
+
+### Deploying
+
+Set `DATABASE_URL` in the host's environment (Vercel: Project → Settings → Environment
+Variables). `.env.local` is gitignored and must never be committed.
+
+---
+
 ## CMS mapping (WordPress-ready)
 
 The site is componentised so it can be lifted onto a CMS without redesign. Every section
@@ -225,10 +288,8 @@ A few values are placeholders that only the business can confirm:
 
 1. **`hello@rexovi.com`** — used in the footer, contact page and the enquiry form.
    Appears in `app/contact/ContactForm.tsx` and `app/contact/page.tsx`.
-2. **Contact form delivery.** There is no backend, so the form validates and then hands a
-   fully composed brief to the visitor's mail client via `mailto:`. This works today, but
-   swap it for a `POST` to an API route or form service when one exists — see the marked
-   comment in `ContactForm.tsx`.
+2. **Contact form delivery is live** — briefs are stored in Neon. Consider adding an
+   email or Slack notification on insert so nobody has to poll the table.
 3. **Social URLs** in `components/site/Footer.tsx` currently point at the platform roots.
 4. **`https://rexovi.com`** is set as the canonical origin in `app/layout.tsx`,
    `app/sitemap.ts` and `app/robots.ts`.

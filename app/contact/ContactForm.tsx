@@ -39,7 +39,8 @@ export default function ContactForm() {
   const [types, setTypes] = useState<string[]>(() => (template ? ["Use a template"] : []));
   const [budget, setBudget] = useState(BUDGETS[0]);
   const [errors, setErrors] = useState<Errors>({});
-  const [sent, setSent] = useState(false);
+  const [status, setStatus] = useState<"idle" | "sending" | "sent" | "failed">("idle");
+  const [failure, setFailure] = useState<string | null>(null);
   const [showTemplate, setShowTemplate] = useState(true);
 
   const activeTemplate = showTemplate ? template : undefined;
@@ -55,7 +56,7 @@ export default function ContactForm() {
     [activeTemplate],
   );
 
-  function handleSubmit(e: FormEvent<HTMLFormElement>) {
+  async function handleSubmit(e: FormEvent<HTMLFormElement>) {
     e.preventDefault();
     const data = new FormData(e.currentTarget);
     const name = String(data.get("name") ?? "").trim();
@@ -76,29 +77,69 @@ export default function ContactForm() {
       return;
     }
 
-    // No backend is wired up yet, so the brief is handed to the visitor's
-    // mail client fully composed. Swap this for a POST to /api/enquiry
-    // (or a form service) when the endpoint exists.
-    const lines = [
-      `Name: ${name}`,
-      `Email: ${email}`,
-      company ? `Company: ${company}` : null,
-      types.length ? `Project type: ${types.join(", ")}` : null,
-      `Budget: ${budget}`,
-      activeTemplate ? `Template of interest: ${activeTemplate.name} (${activeTemplate.category})` : null,
-      "",
-      message,
-    ].filter(Boolean);
+    setStatus("sending");
+    setFailure(null);
 
-    const href = `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
-      lines.join("\n"),
-    )}`;
+    try {
+      const res = await fetch("/api/enquiry", {
+        method: "POST",
+        headers: { "Content-Type": "application/json" },
+        body: JSON.stringify({
+          name,
+          email,
+          company,
+          budget,
+          message,
+          projectTypes: types,
+          templateSlug: activeTemplate?.slug ?? null,
+          sourcePath: window.location.pathname + window.location.search,
+          // Honeypot — must stay empty.
+          website: String(data.get("website") ?? ""),
+        }),
+      });
 
-    setSent(true);
-    window.location.href = href;
+      const payload = (await res.json().catch(() => ({}))) as {
+        ok?: boolean;
+        error?: string;
+        errors?: Errors;
+      };
+
+      if (res.status === 422 && payload.errors) {
+        setErrors(payload.errors);
+        setStatus("idle");
+        return;
+      }
+      if (!res.ok || !payload.ok) {
+        throw new Error(payload.error ?? "Request failed");
+      }
+
+      setStatus("sent");
+    } catch (err) {
+      setFailure(err instanceof Error ? err.message : "Something went wrong.");
+      setStatus("failed");
+    }
   }
 
-  if (sent) {
+  /** Fallback used only when the server could not take the brief. */
+  function mailtoHref() {
+    const form = document.querySelector<HTMLFormElement>("form[data-enquiry]");
+    const data = form ? new FormData(form) : new FormData();
+    const lines = [
+      `Name: ${String(data.get("name") ?? "")}`,
+      `Email: ${String(data.get("email") ?? "")}`,
+      String(data.get("company") ?? "") ? `Company: ${String(data.get("company"))}` : null,
+      types.length ? `Project type: ${types.join(", ")}` : null,
+      `Budget: ${budget}`,
+      activeTemplate ? `Template of interest: ${activeTemplate.name}` : null,
+      "",
+      String(data.get("message") ?? ""),
+    ].filter(Boolean);
+    return `mailto:${CONTACT_EMAIL}?subject=${encodeURIComponent(subject)}&body=${encodeURIComponent(
+      lines.join("\n"),
+    )}`;
+  }
+
+  if (status === "sent") {
     return (
       <div className={s.form}>
         <div className={s.formTop}>
@@ -110,17 +151,17 @@ export default function ContactForm() {
           <span className={s.sentMark} aria-hidden>
             <ArrowRight size={18} />
           </span>
-          <h2 className={s.sentTitle}>Your brief is composed.</h2>
+          <h2 className={s.sentTitle}>Brief received.</h2>
           <p className={s.sentBody}>
-            We have opened your email client with everything filled in — press send and it reaches us
-            directly. If nothing opened, email{" "}
+            It is with us — no email client needed. We read every one and reply within two working
+            days, usually sooner. If anything changes in the meantime, write to{" "}
             <a href={`mailto:${CONTACT_EMAIL}`} className="tlink">
               {CONTACT_EMAIL}
-            </a>{" "}
-            and we will pick it up from there.
+            </a>
+            .
           </p>
-          <button type="button" className="btn btn--ghost btn--sm" onClick={() => setSent(false)}>
-            Edit the brief
+          <button type="button" className="btn btn--ghost btn--sm" onClick={() => setStatus("idle")}>
+            Send another
           </button>
         </div>
       </div>
@@ -128,7 +169,7 @@ export default function ContactForm() {
   }
 
   return (
-    <form className={s.form} onSubmit={handleSubmit} noValidate>
+    <form className={s.form} onSubmit={handleSubmit} noValidate data-enquiry>
       <div className={s.formTop}>
         <span className="dot-live" aria-hidden />
         New project brief
@@ -136,6 +177,16 @@ export default function ContactForm() {
       </div>
 
       <div className={s.formBody}>
+        {/* Honeypot: hidden from people, irresistible to bots. */}
+        <input
+          type="text"
+          name="website"
+          tabIndex={-1}
+          autoComplete="off"
+          aria-hidden="true"
+          className="sr-only"
+        />
+
         {activeTemplate ? (
           <div className={s.prefill}>
             <span>
@@ -267,11 +318,21 @@ export default function ContactForm() {
       </div>
 
       <div className={s.formFoot}>
-        <p className={s.footNote}>
-          Your brief opens in your email client — nothing is stored on this site.
-        </p>
-        <button type="submit" className="btn btn--accent">
-          Send the brief
+        {status === "failed" ? (
+          <p className={s.errorText} role="alert" style={{ flex: 1, minWidth: "16ch" }}>
+            {failure} You can{" "}
+            <a href={mailtoHref()} className="tlink">
+              email it instead
+            </a>
+            .
+          </p>
+        ) : (
+          <p className={s.footNote}>
+            Sent straight to the Rexovi team. We never share your details.
+          </p>
+        )}
+        <button type="submit" className="btn btn--accent" disabled={status === "sending"}>
+          {status === "sending" ? "Sending…" : "Send the brief"}
           <ArrowRight className="btn__arrow" />
         </button>
       </div>
