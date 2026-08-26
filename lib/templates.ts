@@ -111,6 +111,7 @@ export const templates: TemplateItem[] = [
     layout: "saas",
     palette: { bg: "#FFFFFF", ink: "#14121F", acc: "#6D5BFF", soft: "#F1EFFF", mut: "#C9C4E4", line: "#E7E4F6" },
     featured: true,
+    livePreview: true,
   },
   {
     slug: "lumina",

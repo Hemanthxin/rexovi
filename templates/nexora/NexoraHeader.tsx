@@ -1,0 +1,77 @@
+"use client";
+
+import { useEffect, useState } from "react";
+import { nexora as c } from "./content";
+import s from "./nexora.module.css";
+
+/** Dark sticky header: solidifies on scroll, collapses to a drawer on mobile. */
+export default function NexoraHeader() {
+  const [open, setOpen] = useState(false);
+  const [stuck, setStuck] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setStuck(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
+
+  return (
+    <header className={s.header} data-stuck={stuck}>
+      <div className={s.wrap}>
+        <div className={s.headerInner}>
+          <a href="#" className={s.brand}>
+            <span className={s.brandMark} aria-hidden>
+              {c.brand.mark}
+            </span>
+            {c.brand.name}
+          </a>
+
+          <nav className={s.navLinks} aria-label="Primary">
+            {c.nav.links.map((l) => (
+              <a key={l.href} href={l.href} className={s.navLink}>
+                {l.label}
+              </a>
+            ))}
+          </nav>
+
+          <div className={s.headerActions}>
+            <a href="#" className={`${s.btn} ${s.btnQuiet}`}>
+              {c.nav.signIn}
+            </a>
+            <a href="#pricing" className={`${s.btn} ${s.btnPrimary}`}>
+              {c.nav.cta}
+            </a>
+            <button
+              type="button"
+              className={s.burger}
+              aria-label={open ? "Close menu" : "Open menu"}
+              aria-expanded={open}
+              onClick={() => setOpen((v) => !v)}
+            >
+              <svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.8" strokeLinecap="round" aria-hidden>
+                {open ? <path d="M6 6l12 12M18 6L6 18" /> : <path d="M4 8h16M4 16h16" />}
+              </svg>
+            </button>
+          </div>
+        </div>
+      </div>
+
+      <div className={s.mobileNav} data-open={open}>
+        {c.nav.links.map((l) => (
+          <a key={l.href} href={l.href} onClick={() => setOpen(false)}>
+            {l.label}
+          </a>
+        ))}
+        <div className={s.mobileNavCta}>
+          <a href="#" className={`${s.btn} ${s.btnVoid} ${s.btnBlock}`} onClick={() => setOpen(false)}>
+            {c.nav.signIn}
+          </a>
+          <a href="#pricing" className={`${s.btn} ${s.btnPrimary} ${s.btnBlock}`} onClick={() => setOpen(false)}>
+            {c.nav.cta}
+          </a>
+        </div>
+      </div>
+    </header>
+  );
+}

@@ -1,5 +1,6 @@
 import type { ReactElement } from "react";
 import Finora from "./finora/Finora";
+import Nexora from "./nexora/Nexora";
 
 /**
  * Built template sites.
@@ -17,6 +18,7 @@ import Finora from "./finora/Finora";
  */
 const sites: Record<string, () => ReactElement> = {
   finora: () => <Finora />,
+  nexora: () => <Nexora />,
 };
 
 export const templateSlugs = Object.keys(sites);

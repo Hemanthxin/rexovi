@@ -191,17 +191,31 @@ preview. They live under `templates/` and render at `/preview/<slug>`.
 
 ```
 templates/
-  registry.tsx         slug -> site (server-only)
+  registry.tsx              slug -> site (server-only)
   finora/
-    content.ts         every string the site renders
-    Finora.tsx         layout, composed from content
-    FinoraHeader.tsx   the one interactive piece (mobile menu)
-    finora.module.css  the template's own design tokens
+    content.ts              every string the site renders
+    Finora.tsx              layout, composed from content
+    FinoraHeader.tsx        sticky header + mobile menu
+    FinoraInteractive.tsx   tabs, billing toggle, counters, reveals
+    finora.module.css       the template's own design tokens
+  nexora/
+    content.ts
+    Nexora.tsx
+    NexoraHeader.tsx
+    NexoraInteractive.tsx   install copy, product tabs, filter, seat slider
+    nexora.module.css
+public/templates/nexora/    photography used by that template
 ```
 
-**Built so far:** Finora ([/preview/finora](app/(preview)/preview/[slug]/page.tsx)) — hero
-with a live dashboard, logo row, metrics, product split, feature grid, security, pricing,
-testimonials, FAQ and footer. All demo data for a fictional company.
+**Built so far:**
+
+| Template | Route | Character |
+|---|---|---|
+| Finora | `/preview/finora` | Light corporate fintech — dashboard hero, uniform card grid, billing toggle |
+| Nexora | `/preview/nexora` | Dark developer platform — bento grid, code surfaces, install copy, seat slider, photography |
+
+They share no styling on purpose: the point of the library is that two templates
+can look nothing alike. All demo data is for fictional companies.
 
 ### Adding a template site
 
@@ -223,6 +237,20 @@ would pull every template site into the browser bundle.
   template inherits nothing from Rexovi and leaks nothing back, so ten of them can coexist
   with completely different palettes. Element resets inside a template use `:where()` so
   they stay at zero specificity and never out-rank a component class.
+
+### Reveal animations inside a template
+
+Scroll reveals hide their content until JavaScript runs, which means a blank section
+if hydration fails. Each template gates the hidden state on `:global(html.js)` — the
+class the root layout sets before first paint — so without JavaScript every section
+renders fully visible.
+
+### Imagery
+
+Nexora ships three photographs in `public/templates/nexora/`, sourced from Unsplash
+(the Unsplash License permits commercial use without attribution) and re-encoded to
+WebP at ~180 KB total. **Swap them for your own or client-licensed photography before
+selling a template.**
 
 Previews are `noindex` — placeholder copy should not compete with the real site in search.
 
