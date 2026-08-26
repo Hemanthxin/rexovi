@@ -1,0 +1,45 @@
+.box {
+  position: relative;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+  overflow: hidden;
+  background: #fff;
+  /* Set by ResizeObserver; the fallback keeps SSR output sane. */
+  --s: 0.24;
+}
+
+/* A soft shimmer until the frame paints, so the card never flashes empty. */
+.box::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(105deg, #F4F6FA 30%, #FBFCFE 50%, #F4F6FA 70%);
+  background-size: 220% 100%;
+  animation: thumbShimmer 1.5s linear infinite;
+  transition: opacity .45s ease;
+}
+.box[data-loaded="true"]::before { opacity: 0; }
+
+@keyframes thumbShimmer {
+  from { background-position: 120% 0; }
+  to   { background-position: -120% 0; }
+}
+
+.frame {
+  position: absolute;
+  top: 0;
+  left: 0;
+  border: 0;
+  transform: scale(var(--s));
+  transform-origin: 0 0;
+  /* Inert: the card owns every interaction. */
+  pointer-events: none;
+  opacity: 0;
+  transition: opacity .5s ease;
+}
+.box[data-loaded="true"] .frame { opacity: 1; }
+
+@media (prefers-reduced-motion: reduce) {
+  .box::before { animation: none; }
+  .frame { transition: none; }
+}

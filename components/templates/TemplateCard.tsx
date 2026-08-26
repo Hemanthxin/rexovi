@@ -4,6 +4,7 @@ import Link from "next/link";
 import type { CSSProperties } from "react";
 import BrowserFrame from "@/components/mock/BrowserFrame";
 import SitePreview from "@/components/mock/SitePreview";
+import LiveThumb from "./LiveThumb";
 import { ArrowUpRight, Eye } from "@/components/site/Icons";
 import type { TemplateItem } from "@/lib/templates";
 import s from "./TemplateCard.module.css";
@@ -26,11 +27,16 @@ export default function TemplateCard({ item, index, onPreview, variant = "grid",
 
         <div className={`${s.frame} pv-zoom`}>
           <BrowserFrame url={item.previewUrl} tone={item.palette.dark ? "void" : "paper"} ratio="16 / 10" sheen>
-            <SitePreview
-              layout={item.layout}
-              palette={item.palette}
-              label={`${item.name} — ${item.tagline} template preview`}
-            />
+            {item.livePreview ? (
+              /* The built site itself, scaled down — never a stale screenshot. */
+              <LiveThumb src={`/preview/${item.slug}`} title={`${item.name} template preview`} />
+            ) : (
+              <SitePreview
+                layout={item.layout}
+                palette={item.palette}
+                label={`${item.name} — ${item.tagline} template preview`}
+              />
+            )}
           </BrowserFrame>
         </div>
 

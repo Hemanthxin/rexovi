@@ -1,15 +1,23 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { finora as c } from "./content";
 import s from "./finora.module.css";
 
-/** The only interactive part of the template — everything else is static. */
+/** Sticky header: lifts on scroll, collapses to a drawer on small screens. */
 export default function FinoraHeader() {
   const [open, setOpen] = useState(false);
+  const [stuck, setStuck] = useState(false);
+
+  useEffect(() => {
+    const onScroll = () => setStuck(window.scrollY > 8);
+    onScroll();
+    window.addEventListener("scroll", onScroll, { passive: true });
+    return () => window.removeEventListener("scroll", onScroll);
+  }, []);
 
   return (
-    <header className={s.header}>
+    <header className={s.header} data-stuck={stuck}>
       <div className={s.wrap}>
         <div className={s.headerInner}>
           <a href="#" className={s.brand}>

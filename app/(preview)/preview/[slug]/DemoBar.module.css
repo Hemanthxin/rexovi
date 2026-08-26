@@ -75,3 +75,6 @@
   .actions { flex: 1; }
   .link { flex: 1; justify-content: center; padding: .7em .8em; }
 }
+
+/* Set by the root layout before first paint when the document is framed. */
+:global(html.framed) .bar { display: none; }

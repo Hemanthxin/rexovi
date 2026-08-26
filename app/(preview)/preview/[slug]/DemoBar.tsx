@@ -19,6 +19,8 @@ export default function DemoBar({
   slug: string;
 }) {
   const [hidden, setHidden] = useState(false);
+  // Hidden inside an iframe (card thumbnails) via the `framed` class the root
+  // layout sets before first paint — no state, and no flash of the bar.
 
   return (
     <div className={s.bar} data-hidden={hidden} role="complementary" aria-label="Template preview controls">

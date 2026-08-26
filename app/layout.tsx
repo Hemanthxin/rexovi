@@ -92,11 +92,16 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable} ${serif.variable}`}>
       <body>
-        {/* Runs before first paint: scroll-reveal styles are scoped to `.js`,
-            so without JavaScript every section renders fully visible. */}
+        {/* Runs before first paint: scroll-reveal styles are scoped to `.js`, so
+            without JavaScript every section renders fully visible. Also flags
+            whether the document is inside an iframe. */}
         <script
           dangerouslySetInnerHTML={{
-            __html: `document.documentElement.classList.add('js')`,
+            __html:
+              "var d=document.documentElement;d.classList.add('js');" +
+              // Card thumbnails embed template previews; the demo bar is chrome
+              // a thumbnail should not show.
+              "try{if(window.self!==window.top)d.classList.add('framed')}catch(e){d.classList.add('framed')}",
           }}
         />
         {children}

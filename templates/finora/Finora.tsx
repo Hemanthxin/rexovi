@@ -1,4 +1,5 @@
 import FinoraHeader from "./FinoraHeader";
+import { Dashboard, Metrics, Pricing, Reveal, Testimonials } from "./FinoraInteractive";
 import { finora as c } from "./content";
 import s from "./finora.module.css";
 
@@ -77,99 +78,6 @@ function Tick() {
   );
 }
 
-function ArrowUp() {
-  return (
-    <svg width="13" height="13" viewBox="0 0 24 24" {...ico} strokeWidth={2.4} aria-hidden focusable={false}>
-      <path d="M12 19V5M6 11l6-6 6 6" />
-    </svg>
-  );
-}
-
-/* ---------- The dashboard mock, built from content ---------- */
-
-function AppMock() {
-  const d = c.dashboard;
-  return (
-    <div className={s.app}>
-      <div className={s.appBar}>
-        <span className={s.appDots} aria-hidden>
-          <i />
-          <i />
-          <i />
-        </span>
-        <span className={s.appTitle}>Finora · Overview</span>
-        <span className={s.appLive}>
-          <i aria-hidden />
-          Live
-        </span>
-      </div>
-
-      <div className={s.appBody}>
-        <div className={s.balanceCard}>
-          <div className={s.balanceLabel}>{d.balanceLabel}</div>
-          <div className={s.balanceValue}>{d.balance}</div>
-          <div className={s.balanceDelta}>
-            <ArrowUp />
-            {d.delta}
-          </div>
-          <div className={s.accounts}>
-            {d.accounts.map((a) => (
-              <div className={s.account} key={a.number}>
-                <span className={s.accountName}>{a.name}</span>
-                <span className={s.accountNo}>{a.number}</span>
-                <span className={s.accountAmt}>{a.amount}</span>
-              </div>
-            ))}
-          </div>
-        </div>
-
-        <div className={s.panel}>
-          <div className={s.panelTitle}>{d.spendTitle}</div>
-          {d.spend.map((row) => (
-            <div className={s.spendRow} key={row.label}>
-              <div className={s.spendTop}>
-                <b>{row.label}</b>
-                <span>{row.amount}</span>
-              </div>
-              <div className={s.spendTrack}>
-                <span className={s.spendFill} style={{ width: `${row.pct}%` }} />
-              </div>
-            </div>
-          ))}
-        </div>
-
-        <div className={s.panel}>
-          <div className={s.panelTitle}>{d.activityTitle}</div>
-          <div className={s.activity}>
-            {d.activity.map((a) => (
-              <div className={s.activityRow} key={a.what}>
-                <span className={s.avatar} aria-hidden>
-                  {a.who
-                    .split(" ")
-                    .map((w) => w[0])
-                    .join("")
-                    .slice(0, 2)
-                    .toUpperCase()}
-                </span>
-                <span className={s.activityText}>
-                  <span className={s.activityWho}>{a.who}</span>
-                  <span className={s.activityWhat}> · {a.what}</span>
-                </span>
-                <span className={s.activityAmt}>
-                  <b>{a.amount}</b>
-                  <span className={`${s.pill} ${a.state === "pending" ? s.pillPending : s.pillCleared}`}>
-                    {a.state === "pending" ? "Awaiting" : "Cleared"}
-                  </span>
-                </span>
-              </div>
-            ))}
-          </div>
-        </div>
-      </div>
-    </div>
-  );
-}
-
 /* ---------- Page ---------- */
 
 export default function Finora() {
@@ -200,7 +108,7 @@ export default function Finora() {
               </div>
               <p className={s.heroNote}>{c.hero.note}</p>
             </div>
-            <AppMock />
+            <Dashboard />
           </div>
 
           <div className={s.logoRow}>
@@ -217,14 +125,7 @@ export default function Finora() {
       {/* Metrics */}
       <section className={s.section} style={{ paddingBlock: "clamp(30px, 4vw, 52px)" }}>
         <div className={s.wrap}>
-          <div className={s.metrics}>
-            {c.metrics.map((m) => (
-              <div className={s.metric} key={m.label}>
-                <div className={s.metricValue}>{m.value}</div>
-                <div className={s.metricLabel}>{m.label}</div>
-              </div>
-            ))}
-          </div>
+          <Metrics />
         </div>
       </section>
 
@@ -273,11 +174,11 @@ export default function Finora() {
       {/* Features */}
       <section className={s.section} id="features">
         <div className={s.wrap}>
-          <div className={s.head}>
+          <Reveal className={s.head}>
             <span className={s.eyebrow}>{c.features.eyebrow}</span>
             <h2 className={s.h2}>{c.features.title}</h2>
             <p className={s.lead}>{c.features.body}</p>
-          </div>
+          </Reveal>
           <div className={s.featureGrid}>
             {c.features.items.map((f) => (
               <article className={s.featureCard} key={f.title}>
@@ -325,79 +226,33 @@ export default function Finora() {
       {/* Pricing */}
       <section className={`${s.section} ${s.sectionAlt}`} id="pricing">
         <div className={s.wrap}>
-          <div className={`${s.head} ${s.headCenter}`}>
+          <Reveal className={`${s.head} ${s.headCenter}`}>
             <span className={s.eyebrow}>{c.pricing.eyebrow}</span>
             <h2 className={s.h2}>{c.pricing.title}</h2>
             <p className={s.lead}>{c.pricing.body}</p>
-          </div>
-          <div className={s.pricingGrid}>
-            {c.pricing.tiers.map((t) => (
-              <div className={`${s.tier}${t.featured ? ` ${s.tierFeatured}` : ""}`} key={t.name}>
-                {t.featured ? <span className={s.tierTag}>Most popular</span> : null}
-                <div>
-                  <div className={s.tierName}>{t.name}</div>
-                  <div className={s.tierPrice}>
-                    <b>{t.price}</b>
-                    <span>{t.cadence}</span>
-                  </div>
-                </div>
-                <p className={s.tierSummary}>{t.summary}</p>
-                <a
-                  href="#"
-                  className={`${s.btn} ${t.featured ? s.btnPrimary : s.btnGhost} ${s.btnBlock}`}
-                >
-                  {t.cta}
-                </a>
-                <ul className={s.tierList}>
-                  {t.features.map((f) => (
-                    <li key={f}>
-                      <span className={s.check} aria-hidden>
-                        <Tick />
-                      </span>
-                      {f}
-                    </li>
-                  ))}
-                </ul>
-              </div>
-            ))}
-          </div>
+          </Reveal>
+          <Pricing />
         </div>
       </section>
 
       {/* Testimonials */}
       <section className={s.section} id="customers">
         <div className={s.wrap}>
-          <div className={s.head}>
+          <Reveal className={s.head}>
             <span className={s.eyebrow}>{c.testimonials.eyebrow}</span>
             <h2 className={s.h2}>{c.testimonials.title}</h2>
-          </div>
-          <div className={s.quoteGrid}>
-            {c.testimonials.items.map((t) => (
-              <figure className={s.quote} key={t.name}>
-                <blockquote className={s.quoteText}>“{t.quote}”</blockquote>
-                <figcaption className={s.quoteWho}>
-                  <span className={s.avatar} aria-hidden>
-                    {t.initials}
-                  </span>
-                  <span>
-                    <span className={s.quoteName}>{t.name}</span>
-                    <br />
-                    <span className={s.quoteRole}>{t.role}</span>
-                  </span>
-                </figcaption>
-              </figure>
-            ))}
-          </div>
+          </Reveal>
+          <Testimonials />
         </div>
       </section>
 
       {/* FAQ */}
       <section className={`${s.section} ${s.sectionAlt}`} id="faq">
         <div className={s.wrap}>
-          <div className={`${s.head} ${s.headCenter}`}>
+          <Reveal className={`${s.head} ${s.headCenter}`}>
             <span className={s.eyebrow}>{c.faq.eyebrow}</span>
             <h2 className={s.h2}>{c.faq.title}</h2>
-          </div>
+          </Reveal>
           <div className={s.faqList}>
             {c.faq.items.map((f) => (
               <details className={s.faqItem} key={f.q}>

@@ -28,7 +28,10 @@ export interface Feature {
 export interface PricingTier {
   name: string;
   price: string;
+  /** Shown when the billing toggle is set to annual. */
+  priceAnnual: string;
   cadence: string;
+  cadenceAnnual: string;
   summary: string;
   features: string[];
   cta: string;
@@ -85,6 +88,7 @@ export const finora = {
   logos: ["Kellworth", "Ardent Labs", "Northbay", "Meridian", "Voltaire", "Sundara Co."],
 
   dashboard: {
+    tabs: ["Overview", "Spend", "Approvals"],
     eyebrow: "One dashboard",
     title: "The number you actually need, without a spreadsheet",
     body: "Balances, burn, upcoming bills and every card in the business — reconciled continuously rather than at month end.",
@@ -167,6 +171,7 @@ export const finora = {
   },
 
   pricing: {
+    toggle: { monthly: "Monthly", annual: "Annual", save: "Save 20%" },
     eyebrow: "Pricing",
     title: "Priced per company, not per seat",
     body: "Invite your whole team, your accountant and your auditor. We do not charge for people who need to look.",
@@ -174,7 +179,9 @@ export const finora = {
       {
         name: "Starter",
         price: "₹0",
+        priceAnnual: "₹0",
         cadence: "forever",
+        cadenceAnnual: "forever",
         summary: "For founders getting the first accounts in order.",
         features: ["1 operating account", "5 virtual cards", "Unlimited team members", "Tally & Zoho sync", "Email support"],
         cta: "Open an account",
@@ -182,7 +189,9 @@ export const finora = {
       {
         name: "Growth",
         price: "₹4,999",
+        priceAnnual: "₹3,999",
         cadence: "per month",
+        cadenceAnnual: "per month, billed yearly",
         summary: "For teams where more than one person spends.",
         features: [
           "Everything in Starter",
@@ -198,7 +207,9 @@ export const finora = {
       {
         name: "Scale",
         price: "Custom",
+        priceAnnual: "Custom",
         cadence: "annual",
+        cadenceAnnual: "annual",
         summary: "For finance teams with auditors to satisfy.",
         features: [
           "Everything in Growth",

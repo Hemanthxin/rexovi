@@ -66,6 +66,9 @@
 .site :where(a) { color: inherit; text-decoration: none; }
 .site :where(button) { font: inherit; cursor: pointer; border: 0; background: none; }
 .site :focus-visible { outline: 2px solid var(--f-blue); outline-offset: 3px; border-radius: 4px; }
+/* The host stylesheet paints selection in the Rexovi accent; a template must
+   own its own. */
+.site ::selection { background: var(--f-blue); color: #fff; }
 
 .h1 { font-size: clamp(2.3rem, 4.9vw, 3.9rem); letter-spacing: -0.038em; line-height: 1.04; }
 .h2 { font-size: clamp(1.85rem, 3.2vw, 2.7rem); letter-spacing: -0.032em; }
@@ -628,4 +631,137 @@
   .heroActions .btn, .closingActions .btn { flex: 1; }
   .logoRow { justify-content: flex-start; gap: 16px 24px; }
   .faqA { padding-right: 4px; }
+}
+
+/* ============================================================
+   Interactive states
+   ============================================================ */
+
+/* ---------- Scroll reveal ---------- */
+.reveal {
+  opacity: 0;
+  transform: translateY(20px);
+  transition: opacity .75s cubic-bezier(.22,.68,.24,1), transform .75s cubic-bezier(.22,.68,.24,1);
+}
+.revealIn { opacity: 1; transform: none; }
+
+/* ---------- Header lifts on scroll ---------- */
+.header { transition: box-shadow .3s ease, background .3s ease; }
+.header[data-stuck="true"] {
+  box-shadow: 0 1px 0 rgba(11,26,51,.06), 0 8px 28px rgba(11,26,51,.07);
+  background: rgba(255,255,255,.94);
+}
+
+/* ---------- Dashboard tabs ---------- */
+.appTabs {
+  display: flex;
+  gap: 2px;
+  margin-left: 6px;
+  padding: 3px;
+  border-radius: 999px;
+  background: var(--f-blue-soft);
+}
+.appTab {
+  padding: 5px 12px;
+  border-radius: 999px;
+  font-size: .781rem;
+  font-weight: 600;
+  color: var(--f-muted);
+  transition: background .2s ease, color .2s ease;
+}
+.appTab:hover { color: var(--f-ink); }
+.appTab[data-on="true"] {
+  background: #fff;
+  color: var(--f-blue);
+  box-shadow: 0 1px 2px rgba(11,26,51,.08);
+}
+
+/* Panels fade in when a tab changes. */
+.appBody > * { animation: panelIn .34s cubic-bezier(.22,.68,.24,1) both; }
+@keyframes panelIn {
+  from { opacity: 0; transform: translateY(6px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* Bars and columns grow rather than snapping in. */
+.spendFill { transition: width .7s cubic-bezier(.22,.68,.24,1); animation: growW .8s cubic-bezier(.22,.68,.24,1) both; }
+@keyframes growW { from { width: 0 !important; } }
+.chart i { animation: growH .7s cubic-bezier(.22,.68,.24,1) both; transform-origin: bottom; }
+@keyframes growH { from { transform: scaleY(0); } }
+
+/* ---------- Billing toggle ---------- */
+.billing {
+  display: inline-flex;
+  gap: 4px;
+  padding: 5px;
+  margin: 0 auto clamp(28px, 3.4vw, 42px);
+  border-radius: 999px;
+  background: #fff;
+  border: 1px solid var(--f-line);
+  box-shadow: var(--f-shadow-sm);
+}
+.billingWrap { display: flex; justify-content: center; }
+.billingBtn {
+  display: inline-flex;
+  align-items: center;
+  gap: 8px;
+  padding: .62em 1.25em;
+  border-radius: 999px;
+  font-size: .938rem;
+  font-weight: 600;
+  color: var(--f-muted);
+  transition: background .22s ease, color .22s ease;
+}
+.billingBtn:hover { color: var(--f-ink); }
+.billingBtn[data-on="true"] { background: var(--f-blue); color: #fff; }
+.billingSave {
+  padding: 2px 8px;
+  border-radius: 999px;
+  background: #D1FAE5;
+  color: var(--f-mint);
+  font-size: .688rem;
+  font-weight: 700;
+}
+.billingBtn[data-on="true"] .billingSave { background: rgba(255,255,255,.22); color: #fff; }
+
+/* Price swaps with a small lift rather than a jump. */
+.tierPriceValue { animation: priceIn .32s cubic-bezier(.22,.68,.24,1) both; }
+@keyframes priceIn {
+  from { opacity: 0; transform: translateY(-7px); }
+  to   { opacity: 1; transform: none; }
+}
+
+/* ---------- Feature cards ---------- */
+.featureCard .featureIcon { transition: background .25s ease, color .25s ease, transform .25s ease; }
+.featureCard:hover .featureIcon { background: var(--f-blue); color: #fff; transform: scale(1.06) rotate(-3deg); }
+
+/* ---------- Testimonial carousel (small screens) ---------- */
+.quoteDots { display: none; justify-content: center; gap: 8px; margin-top: 22px; }
+.quoteDot {
+  width: 8px; height: 8px;
+  border-radius: 999px;
+  background: #CBD5E8;
+  transition: background .22s ease, width .22s ease;
+  position: relative;
+}
+.quoteDot::after { content: ""; position: absolute; inset: -12px; }
+.quoteDot[data-on="true"] { background: var(--f-blue); width: 22px; }
+
+@media (max-width: 680px) {
+  /* One quote at a time, driven by the dots. */
+  .quoteGrid { display: block; position: relative; }
+  .quote { display: none; }
+  .quote[data-active="true"] { display: grid; animation: panelIn .34s cubic-bezier(.22,.68,.24,1) both; }
+  .quoteDots { display: flex; }
+}
+
+/* ---------- Reduced motion ---------- */
+@media (prefers-reduced-motion: reduce) {
+  .reveal { opacity: 1; transform: none; transition: none; }
+  .appBody > *,
+  .spendFill,
+  .chart i,
+  .tierPriceValue,
+  .quote[data-active="true"] { animation: none; }
+  .spendFill { transition: none; }
 }
