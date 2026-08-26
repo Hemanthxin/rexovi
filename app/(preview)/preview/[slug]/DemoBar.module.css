@@ -1,0 +1,77 @@
+.bar {
+  position: fixed;
+  left: 50%;
+  bottom: 18px;
+  transform: translateX(-50%);
+  z-index: 400;
+  display: flex;
+  align-items: center;
+  gap: 14px;
+  padding: 9px 10px 9px 16px;
+  border-radius: 999px;
+  background: rgba(17, 18, 20, .9);
+  -webkit-backdrop-filter: blur(16px) saturate(1.4);
+  backdrop-filter: blur(16px) saturate(1.4);
+  border: 1px solid rgba(255, 255, 255, .14);
+  box-shadow: 0 10px 40px rgba(0, 0, 0, .35);
+  color: #F4F2ED;
+  font-family: var(--font-sans), system-ui, sans-serif;
+  max-width: calc(100vw - 24px);
+  transition: transform .35s cubic-bezier(.22, .68, .24, 1), opacity .3s ease;
+}
+.bar[data-hidden="true"] {
+  transform: translateX(-50%) translateY(150%);
+  opacity: 0;
+  pointer-events: none;
+}
+
+.label { display: grid; gap: 1px; min-width: 0; }
+.name { font-size: .875rem; font-weight: 600; letter-spacing: -.01em; }
+.meta {
+  font-family: var(--font-mono), monospace;
+  font-size: .625rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: #8A9099;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.actions { display: flex; align-items: center; gap: 6px; flex: none; }
+
+.link {
+  display: inline-flex;
+  align-items: center;
+  gap: .45em;
+  padding: .58em 1em;
+  border-radius: 999px;
+  font-size: .844rem;
+  font-weight: 500;
+  white-space: nowrap;
+  transition: background .2s ease, color .2s ease, border-color .2s ease;
+}
+.back { border: 1px solid rgba(255, 255, 255, .18); color: #E7E5E0; }
+.back:hover { background: rgba(255, 255, 255, .1); }
+.use { background: var(--accent, #F47B20); color: #fff; }
+.use:hover { background: #fff; color: #111214; }
+
+.close {
+  width: 30px;
+  height: 30px;
+  flex: none;
+  display: grid;
+  place-items: center;
+  border-radius: 999px;
+  color: #8A9099;
+  transition: background .2s ease, color .2s ease;
+}
+.close:hover { background: rgba(255, 255, 255, .12); color: #fff; }
+
+@media (max-width: 640px) {
+  .bar { left: 12px; right: 12px; transform: none; bottom: 12px; padding: 8px 8px 8px 14px; gap: 10px; }
+  .bar[data-hidden="true"] { transform: translateY(150%); }
+  .label { display: none; }
+  .actions { flex: 1; }
+  .link { flex: 1; justify-content: center; padding: .7em .8em; }
+}

@@ -35,10 +35,22 @@ export default function TemplateCard({ item, index, onPreview, variant = "grid",
         </div>
 
         <div className={s.overlay}>
-          <button type="button" className={s.act} onClick={() => onPreview(item)}>
-            <Eye size={14} />
-            Preview
-          </button>
+          {item.livePreview ? (
+            <Link
+              href={`/preview/${item.slug}`}
+              className={s.act}
+              target="_blank"
+              rel="noopener noreferrer"
+            >
+              <Eye size={14} />
+              Preview site
+            </Link>
+          ) : (
+            <button type="button" className={s.act} onClick={() => onPreview(item)}>
+              <Eye size={14} />
+              Preview
+            </button>
+          )}
           <Link href={`/contact?template=${item.slug}`} className={`${s.act} ${s.actSolid}`}>
             Use Template
             <ArrowUpRight size={13} />

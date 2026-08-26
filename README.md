@@ -184,6 +184,50 @@ all update from it.
 
 ---
 
+## Template sites
+
+Each marketplace entry can have a **real, browsable website** behind it, not just a card
+preview. They live under `templates/` and render at `/preview/<slug>`.
+
+```
+templates/
+  registry.tsx         slug -> site (server-only)
+  finora/
+    content.ts         every string the site renders
+    Finora.tsx         layout, composed from content
+    FinoraHeader.tsx   the one interactive piece (mobile menu)
+    finora.module.css  the template's own design tokens
+```
+
+**Built so far:** Finora ([/preview/finora](app/(preview)/preview/[slug]/page.tsx)) — hero
+with a live dashboard, logo row, metrics, product split, feature grid, security, pricing,
+testimonials, FAQ and footer. All demo data for a fictional company.
+
+### Adding a template site
+
+1. Create `templates/<slug>/` with `content.ts`, a component and a scoped stylesheet.
+2. Register it in `templates/registry.tsx`.
+3. Set `livePreview: true` on its entry in `lib/templates.ts`.
+
+The marketplace card then swaps its **Preview** button from the detail modal to the real
+site; templates without one keep the modal. `livePreview` is a plain data flag rather than
+a registry lookup on purpose — the cards are client components, and importing the registry
+would pull every template site into the browser bundle.
+
+### Two rules worth keeping
+
+- **Route groups keep the chrome apart.** `app/(main)/` carries the Rexovi nav, footer and
+  Organization JSON-LD; `app/(preview)/` is a bare shell. A demo has to look like its own
+  product, not a page inside rexovi.com. Route groups do not affect URLs.
+- **Every token is declared on the template's own `.site` wrapper**, never `:root`. The
+  template inherits nothing from Rexovi and leaks nothing back, so ten of them can coexist
+  with completely different palettes. Element resets inside a template use `:where()` so
+  they stay at zero specificity and never out-rank a component class.
+
+Previews are `noindex` — placeholder copy should not compete with the real site in search.
+
+---
+
 ## Database — Neon Postgres
 
 The contact form writes to Neon. Everything else on the site is still static.

@@ -159,13 +159,21 @@ export default function TemplateModal({
           </div>
 
           <div className={s.infoFoot}>
+            {item.livePreview ? (
+              <Link
+                href={`/preview/${item.slug}`}
+                className="btn btn--ghost"
+                target="_blank"
+                rel="noopener noreferrer"
+              >
+                Open full site
+                <ArrowUpRight className="btn__arrow" />
+              </Link>
+            ) : null}
             <Link href={`/contact?template=${item.slug}`} className="btn btn--accent">
               Build With This
               <ArrowUpRight className="btn__arrow" />
             </Link>
-            <button type="button" className="btn btn--ghost" onClick={onClose}>
-              Keep Browsing
-            </button>
           </div>
         </div>
       </div>

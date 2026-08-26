@@ -1,9 +1,5 @@
 import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
-import Nav from "@/components/site/Nav";
-import Footer from "@/components/site/Footer";
-import CursorHalo from "@/components/site/CursorHalo";
-import { LogoGradient } from "@/components/site/Logo";
 import "./globals.css";
 import "./previews.css";
 
@@ -92,30 +88,6 @@ export const viewport: Viewport = {
   viewportFit: "cover",
 };
 
-const orgJsonLd = {
-  "@context": "https://schema.org",
-  "@type": "Organization",
-  name: "Rexovi Technologies",
-  url: SITE,
-  description:
-    "Rexovi Technologies is a digital technology company building websites, web applications, mobile applications, UI/UX and digital products.",
-  makesOffer: [
-    "Website development",
-    "Web application development",
-    "Mobile application development",
-    "UI/UX design",
-    "Custom digital products",
-    "Website templates",
-  ].map((name) => ({ "@type": "Offer", itemOffered: { "@type": "Service", name } })),
-  owns: {
-    "@type": "Product",
-    name: "Saafera",
-    url: "https://saafera.com",
-    description:
-      "Rexovi's first digital product: smart travel planning for India — discover places, build budget-friendly routes, compare stays and explore festivals and hidden gems.",
-  },
-};
-
 export default function RootLayout({ children }: Readonly<{ children: React.ReactNode }>) {
   return (
     <html lang="en" className={`${display.variable} ${sans.variable} ${mono.variable} ${serif.variable}`}>
@@ -127,19 +99,7 @@ export default function RootLayout({ children }: Readonly<{ children: React.Reac
             __html: `document.documentElement.classList.add('js')`,
           }}
         />
-        <a className="skip-link" href="#main">
-          Skip to content
-        </a>
-        <LogoGradient />
-        <CursorHalo />
-        <Nav />
-        <main id="main">{children}</main>
-        <Footer />
-        <script
-          type="application/ld+json"
-          // Structured data — improves how the company and Saafera are understood in search.
-          dangerouslySetInnerHTML={{ __html: JSON.stringify(orgJsonLd) }}
-        />
+        {children}
       </body>
     </html>
   );

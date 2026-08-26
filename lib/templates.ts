@@ -61,6 +61,8 @@ export interface TemplateItem {
   layout: PreviewLayout;
   palette: TemplatePalette;
   featured?: boolean;
+  /** A full demo site exists at /preview/<slug> (see templates/registry.ts). */
+  livePreview?: boolean;
 }
 
 export const TEMPLATE_CATEGORIES: readonly ("All" | TemplateCategory)[] = [
@@ -92,6 +94,7 @@ export const templates: TemplateItem[] = [
     layout: "finance",
     palette: { bg: "#FFFFFF", ink: "#0B1A33", acc: "#2563EB", soft: "#EEF3FC", mut: "#C3CEE0", line: "#E3EAF5" },
     featured: true,
+    livePreview: true,
   },
   {
     slug: "nexora",
