@@ -19,6 +19,9 @@ interface Props {
   showDots?: boolean;
 }
 
+/** Screenshots are UI: q75 softens text and hairlines, so bias high. */
+const SHOT_QUALITY = 90;
+
 /**
  * Cross-fades between real product screenshots inside a device frame.
  *
@@ -85,6 +88,7 @@ export default function ScreenSlideshow({
             alt={i === index ? shot.label : ""}
             fill
             sizes={sizes}
+            quality={SHOT_QUALITY}
             priority={priority && i === 0}
           />
         </span>

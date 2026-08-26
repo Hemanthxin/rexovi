@@ -130,12 +130,25 @@ The lookup runs on the server at build time: a slot with no file is skipped, one
 renders as a still, two or more become a slideshow with dots. No code change, and it
 applies everywhere the mock appears — homepage, product page, work index, services card.
 
-**Match the capture aspect ratio.** The desktop shots are 1902×912, and the browser frames
+**Match the capture aspect ratio.** The desktop shots are 2.086:1, and the browser frames
 around them use exactly that via `SAAFERA_DESKTOP_RATIO` (exported from
 `SaaferaPreview.tsx`) so nothing is cropped. If you swap in captures of a different shape,
-update that constant to match. Slides are top-aligned and use `object-fit: cover`, so a
-mismatched frame crops the bottom rather than the header — the mobile dashboard (319×823)
-loses its tab bar this way inside the 9:19 phone frame.
+update that constant. Slides are top-aligned and use `object-fit: cover`, so a mismatched
+frame crops the bottom rather than the header — the mobile dashboard (319×823) loses its
+tab bar this way inside the 9:19 phone frame.
+
+**Capture at 2×.** The desktop mock renders up to ~1220 CSS px wide and the phone mock up
+to ~260, so a retina display needs ~2440 and ~520 device pixels. A 1× screenshot gets
+upscaled and looks soft. The sign-in shots are 2× (3804×1824 and 828×1792); the dashboards
+are still 1×, so they are sharp at DPR 1 but soft on retina — re-capture at 2× to fix.
+
+Two settings keep them sharp, and both matter:
+
+- `sizes` on each `<Image>` must match the **widest** place the mock renders. Under-
+  declaring makes the browser fetch a small variant and upscale it — that alone had the
+  desktop mock fetching a 892px file for a 1218px slot.
+- `quality={90}`, allow-listed in `next.config.ts`. The sources are already compressed
+  WebP, and Next's default q75 re-encode visibly softens UI text and hairlines.
 
 Auto-advance runs only while a frame is on screen and the pointer is elsewhere, so several
 mockups on one page stay calm; reduced-motion users get a static first slide with working

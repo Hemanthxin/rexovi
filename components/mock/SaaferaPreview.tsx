@@ -73,7 +73,9 @@ export function SaaferaDesktop({ priority = false }: { priority?: boolean }) {
   return (
     <ScreenSlideshow
       shots={resolve(DESKTOP_SLOTS)}
-      sizes="(max-width: 900px) 92vw, min(1040px, 62vw)"
+      /* Widest render is the product page showcase at ~1220 CSS px. Under-
+         declaring here makes the browser fetch a small file and upscale it. */
+      sizes="(max-width: 900px) 94vw, 1240px"
       priority={priority}
     />
   );
@@ -83,7 +85,8 @@ export function SaaferaMobile({ priority = false }: { priority?: boolean }) {
   return (
     <ScreenSlideshow
       shots={resolve(MOBILE_SLOTS)}
-      sizes="(max-width: 900px) 45vw, 220px"
+      /* Widest render is the product-page hero phone at ~260 CSS px. */
+      sizes="(max-width: 900px) 46vw, 280px"
       priority={priority}
       intervalMs={5200}
     />
