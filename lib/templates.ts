@@ -144,6 +144,7 @@ export const templates: TemplateItem[] = [
     pages: 10,
     layout: "health",
     palette: { bg: "#FFFFFF", ink: "#0E2A28", acc: "#14A98F", soft: "#E9F6F3", mut: "#B8D6D0", line: "#DFEFEB" },
+    livePreview: true,
   },
   {
     slug: "urbanly",

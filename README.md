@@ -210,6 +210,11 @@ templates/
     LuminaHeader.tsx
     LuminaInteractive.tsx   cursor-tracking index, grade slider, accordion
     lumina.module.css
+  medora/
+    content.ts
+    Medora.tsx
+    MedoraInteractive.tsx   booking flow, filters, locations, text size
+    medora.module.css
 public/templates/<slug>/    photography used by that template
 ```
 
@@ -220,6 +225,7 @@ public/templates/<slug>/    photography used by that template
 | Finora | `/preview/finora` | Light corporate fintech — dashboard hero, uniform card grid, billing toggle |
 | Nexora | `/preview/nexora` | Dark developer platform — bento grid, code surfaces, install copy, seat slider, photography |
 | Lumina | `/preview/lumina` | Editorial studio — warm paper, oversized type, cursor-tracking work index, drag-to-compare grade slider |
+| Medora | `/preview/medora` | Healthcare — calm teal, large targets, four-step booking flow, doctor filters, clinic switcher, text-size control |
 
 They share no styling on purpose: the point of the library is that two templates
 can look nothing alike. All demo data is for fictional companies.
@@ -251,6 +257,17 @@ Scroll reveals hide their content until JavaScript runs, which means a blank sec
 if hydration fails. Each template gates the hidden state on `:global(html.js)` — the
 class the root layout sets before first paint — so without JavaScript every section
 renders fully visible.
+
+### Two traps worth knowing
+
+**Inline styles beat media queries.** Medora's hero originally set its card grid with
+`style={{ gridTemplateColumns: "1fr 1fr" }}`, which the single-column mobile rule could
+never override — the page scrolled sideways at 390px. Responsive variants belong in the
+stylesheet as a modifier class, never inline.
+
+**Leave room for the burger.** The same overflow was compounded by the header keeping a
+full-width CTA next to the menu button. Below 620px the header now shows the menu only;
+the drawer and the hero both carry the primary action.
 
 ### Responsive images that only exist at one breakpoint
 
