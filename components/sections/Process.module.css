@@ -1,0 +1,121 @@
+.sec { position: relative; overflow: clip; }
+
+.track {
+  position: relative;
+  margin-top: clamp(20px, 3vw, 40px);
+}
+
+/* Connective path drawn behind the steps */
+.path {
+  position: absolute;
+  inset: 0 0 auto;
+  height: 120px;
+  width: 100%;
+  overflow: visible;
+  pointer-events: none;
+  z-index: 0;
+}
+.path path {
+  fill: none;
+  stroke: var(--line);
+  stroke-width: 1.5;
+}
+.path .live {
+  stroke: var(--accent);
+  stroke-dasharray: 1200;
+  stroke-dashoffset: 1200;
+}
+.track:global(.is-in) .path .live { animation: trace 2.2s var(--e-out) .2s forwards; }
+
+.steps {
+  position: relative;
+  z-index: 1;
+  display: grid;
+  grid-template-columns: repeat(5, minmax(0, 1fr));
+  gap: 8px;
+}
+
+.step {
+  position: relative;
+  display: grid;
+  gap: 12px;
+  align-content: start;
+  padding: 0 clamp(8px, 1.4vw, 18px);
+}
+
+.marker {
+  width: 54px;
+  height: 54px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--paper-pure);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono), monospace;
+  font-size: .75rem;
+  letter-spacing: .08em;
+  color: var(--muted);
+  box-shadow: var(--sh-1);
+  transition: transform var(--t-med), border-color var(--t-med), background var(--t-med), color var(--t-med), box-shadow var(--t-med);
+}
+.step:hover .marker {
+  transform: translateY(-4px) scale(1.05);
+  border-color: var(--accent);
+  background: var(--accent);
+  color: #fff;
+  box-shadow: 0 10px 26px rgba(244,123,32,.28);
+}
+
+.title { font-size: clamp(1.2rem, 1.7vw, 1.45rem); letter-spacing: -.028em; margin-top: 4px; }
+.body { color: var(--ink-2); font-size: .969rem; font-weight: 450; }
+.detail { color: var(--muted); font-size: .875rem; line-height: 1.55; }
+
+.stepRule {
+  height: 1px;
+  background: var(--line);
+  margin-top: 8px;
+  position: relative;
+  overflow: hidden;
+}
+.stepRule i {
+  position: absolute;
+  inset: 0;
+  background: var(--accent);
+  transform: scaleX(0);
+  transform-origin: left;
+  transition: transform .5s var(--e-out);
+}
+.step:hover .stepRule i { transform: scaleX(1); }
+
+/* — Mobile: vertical rail — */
+@media (max-width: 900px) {
+  .path { display: none; }
+  .steps { grid-template-columns: 1fr; gap: 0; }
+  .step {
+    grid-template-columns: 54px 1fr;
+    grid-template-areas:
+      "marker title"
+      "marker body"
+      "marker detail"
+      "rule rule";
+    column-gap: 18px;
+    row-gap: 6px;
+    padding: 0 0 26px;
+    position: relative;
+  }
+  .step::before {
+    content: "";
+    position: absolute;
+    left: 27px;
+    top: 54px;
+    bottom: 0;
+    width: 1px;
+    background: repeating-linear-gradient(180deg, var(--line) 0 5px, transparent 5px 10px);
+  }
+  .step:last-child::before { display: none; }
+  .marker { grid-area: marker; }
+  .title { grid-area: title; margin-top: 10px; }
+  .body { grid-area: body; }
+  .detail { grid-area: detail; }
+  .stepRule { grid-area: rule; margin-top: 18px; }
+}

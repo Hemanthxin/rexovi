@@ -1,0 +1,142 @@
+.card {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  background: var(--paper-pure);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: transform var(--t-med), box-shadow var(--t-med), border-color var(--t-med);
+}
+.card:hover { transform: translateY(-4px); border-color: #D6D1C6; box-shadow: var(--sh-3); }
+
+/* — Preview area — */
+.shot {
+  position: relative;
+  padding: clamp(12px, 1.6vw, 18px);
+  background:
+    linear-gradient(to right, var(--line-soft) 1px, transparent 1px) 0 0 / 26px 26px,
+    linear-gradient(to bottom, var(--line-soft) 1px, transparent 1px) 0 0 / 26px 26px,
+    linear-gradient(160deg, #FBFAF7, #F2EFE9);
+  border-bottom: 1px solid var(--line);
+  overflow: hidden;
+}
+.shot[data-dark="true"] {
+  background:
+    linear-gradient(to right, rgba(255,255,255,.05) 1px, transparent 1px) 0 0 / 26px 26px,
+    linear-gradient(to bottom, rgba(255,255,255,.05) 1px, transparent 1px) 0 0 / 26px 26px,
+    linear-gradient(160deg, #1B1B21, #101014);
+  border-bottom-color: #23232B;
+}
+.frame { transition: transform .55s var(--e-out); }
+.card:hover .frame { transform: translateY(-5px) scale(1.012); }
+
+/* Hover overlay with actions */
+.overlay {
+  position: absolute;
+  inset: 0;
+  z-index: 5;
+  display: flex;
+  align-items: flex-end;
+  justify-content: center;
+  gap: 10px;
+  padding: 18px;
+  background: linear-gradient(180deg, rgba(11,12,14,0) 35%, rgba(11,12,14,.62));
+  opacity: 0;
+  transition: opacity var(--t-med);
+}
+.card:hover .overlay,
+.card:focus-within .overlay { opacity: 1; }
+
+.act {
+  display: inline-flex;
+  align-items: center;
+  gap: .5em;
+  padding: .58em 1em;
+  border-radius: 999px;
+  font-size: .844rem;
+  font-weight: 500;
+  background: rgba(255,255,255,.94);
+  color: var(--ink);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  transform: translateY(10px);
+  opacity: 0;
+  transition: transform .42s var(--e-out), opacity .42s var(--e-out), background var(--t-med), color var(--t-med);
+  white-space: nowrap;
+}
+.act:nth-child(2) { transition-delay: .05s; }
+.card:hover .act,
+.card:focus-within .act { transform: none; opacity: 1; }
+.act:hover { background: var(--accent); color: #fff; }
+.actSolid { background: var(--accent); color: #fff; }
+.actSolid:hover { background: #fff; color: var(--ink); }
+
+/* Corner index */
+.stamp {
+  position: absolute;
+  top: 14px;
+  right: 14px;
+  z-index: 4;
+  font-family: var(--font-mono), monospace;
+  font-size: .594rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  background: rgba(255,255,255,.86);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .25em .6em;
+  -webkit-backdrop-filter: blur(6px);
+  backdrop-filter: blur(6px);
+}
+.shot[data-dark="true"] .stamp {
+  background: rgba(20,20,26,.8);
+  border-color: rgba(255,255,255,.16);
+  color: #9AA0A8;
+}
+
+/* — Meta — */
+.meta {
+  display: grid;
+  gap: 10px;
+  padding: clamp(16px, 1.8vw, 22px);
+  flex: 1;
+}
+.metaTop { display: flex; align-items: baseline; justify-content: space-between; gap: 12px; }
+.name { font-size: 1.14rem; letter-spacing: -.026em; }
+.cat {
+  font-family: var(--font-mono), monospace;
+  font-size: .594rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--accent-ink);
+  white-space: nowrap;
+}
+.tagline { color: var(--muted); font-size: .906rem; line-height: 1.5; }
+
+.foot {
+  display: flex;
+  align-items: center;
+  gap: 8px;
+  flex-wrap: wrap;
+  margin-top: auto;
+  padding-top: 12px;
+  border-top: 1px solid var(--line-soft);
+  font-family: var(--font-mono), monospace;
+  font-size: .594rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+.swatch {
+  width: 12px; height: 12px;
+  border-radius: 3px;
+  border: 1px solid rgba(17,18,20,.12);
+  flex: none;
+}
+.pages { margin-left: auto; }
+
+/* Compact rail variant used on the homepage */
+.card[data-variant="rail"] .meta { padding: 14px 16px 16px; gap: 8px; }
+.card[data-variant="rail"] .tagline { font-size: .844rem; }

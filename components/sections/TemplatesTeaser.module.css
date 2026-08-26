@@ -1,0 +1,55 @@
+.sec {
+  position: relative;
+  background: linear-gradient(180deg, var(--paper-warm), var(--paper) 46%);
+  border-block: 1px solid var(--line);
+  overflow: clip;
+}
+
+.headExtras {
+  display: flex;
+  align-items: center;
+  gap: 10px;
+  flex-wrap: wrap;
+  margin-top: 6px;
+}
+
+.railWrap { position: relative; }
+
+.foot {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 20px;
+  flex-wrap: wrap;
+  margin-top: clamp(26px, 3.4vw, 44px);
+  padding-top: clamp(20px, 2.6vw, 30px);
+  border-top: 1px solid var(--line);
+}
+.footNote {
+  color: var(--muted);
+  font-size: .938rem;
+  max-width: 48ch;
+}
+.footNote b { color: var(--ink); font-weight: 500; }
+
+.swipeHint {
+  display: none;
+  align-items: center;
+  gap: 8px;
+  font-family: var(--font-mono), monospace;
+  font-size: .625rem;
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  color: var(--muted);
+  margin-top: 12px;
+}
+.swipeHint i {
+  width: 26px;
+  height: 1px;
+  background: linear-gradient(90deg, var(--accent), transparent);
+  display: block;
+}
+
+@media (max-width: 760px) {
+  .swipeHint { display: flex; }
+}

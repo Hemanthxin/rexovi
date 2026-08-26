@@ -1,0 +1,318 @@
+.sec { position: relative; overflow: clip; }
+
+/* Explicit areas so the bento has no holes: Websites runs across the top,
+   Mobile stands full-height on the right, the two mid cards fill row two,
+   and Digital Products spans the base. */
+.grid {
+  display: grid;
+  grid-template-columns: repeat(6, minmax(0, 1fr));
+  grid-template-areas:
+    "web web web web mob mob"
+    "app app ux  ux  mob mob"
+    "prd prd prd prd prd prd";
+  gap: 14px;
+}
+
+.card {
+  position: relative;
+  display: grid;
+  grid-template-rows: auto 1fr;
+  gap: clamp(18px, 2.2vw, 28px);
+  padding: clamp(20px, 2.2vw, 30px);
+  background: var(--paper-pure);
+  border: 1px solid var(--line);
+  border-radius: var(--r-lg);
+  overflow: hidden;
+  transition: border-color var(--t-med), box-shadow var(--t-med), transform var(--t-med);
+}
+.card::before {
+  content: "";
+  position: absolute;
+  inset: 0;
+  background: radial-gradient(120% 90% at 100% 0%, rgba(244,123,32,.07), transparent 55%);
+  opacity: 0;
+  transition: opacity var(--t-med);
+  pointer-events: none;
+}
+.card:hover { border-color: #D6D1C6; box-shadow: var(--sh-3); transform: translateY(-3px); }
+.card:hover::before { opacity: 1; }
+
+/* Two of the five cards read horizontally — text beside the visual — because
+   they are wide enough that a stacked layout would leave dead space. */
+.aWebsites {
+  grid-area: web;
+  grid-template-columns: minmax(0, .78fr) minmax(0, 1.22fr);
+  grid-template-rows: auto;
+  align-items: center;
+  gap: clamp(22px, 3.4vw, 52px);
+}
+.aMobile { grid-area: mob; }
+.aApp    { grid-area: app; }
+.aUx     { grid-area: ux; }
+.aProduct {
+  grid-area: prd;
+  grid-template-columns: minmax(0, .82fr) minmax(0, 1.18fr);
+  grid-template-rows: auto;
+  align-items: center;
+  gap: clamp(24px, 4vw, 60px);
+}
+
+.head { display: grid; gap: 12px; align-content: start; position: relative; z-index: 1; }
+.idxRow { display: flex; align-items: center; gap: 12px; }
+.idx {
+  font-family: var(--font-mono), monospace;
+  font-size: .688rem;
+  letter-spacing: .16em;
+  color: var(--accent-ink);
+}
+.idxRule { height: 1px; flex: 1; background: var(--line); }
+.title { font-size: clamp(1.24rem, 1.85vw, 1.6rem); letter-spacing: -.028em; }
+.body { color: var(--muted); font-size: .938rem; line-height: 1.58; max-width: 40ch; }
+
+.points { display: flex; flex-wrap: wrap; gap: 6px; margin-top: 4px; }
+.point {
+  font-family: var(--font-mono), monospace;
+  font-size: .625rem;
+  letter-spacing: .1em;
+  text-transform: uppercase;
+  color: var(--muted);
+  border: 1px solid var(--line);
+  border-radius: 999px;
+  padding: .28em .68em;
+  transition: border-color var(--t-med), color var(--t-med);
+}
+.card:hover .point { border-color: #DBD5C9; color: var(--ink-2); }
+
+/* ---------- Visual shells ---------- */
+.visual {
+  position: relative;
+  align-self: end;
+  min-height: 0;
+  z-index: 1;
+}
+.aMobile .visual { align-self: stretch; display: flex; }
+.aMobile .vPhones { flex: 1; align-items: center; }
+
+/* 01 — Websites: layered browser windows */
+.vBrowser { position: relative; padding: 0 5% 10px 0; }
+.vBrowserBack {
+  position: absolute;
+  inset: 12px 0 24px 12%;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: linear-gradient(180deg, #FCFBF9, #F2EFE9);
+  transition: transform var(--t-med);
+}
+.card:hover .vBrowserBack { transform: translate(6px, -6px); }
+.vBrowserFront { position: relative; transition: transform var(--t-med); }
+.card:hover .vBrowserFront { transform: translate(-4px, -2px); }
+
+/* 02 — Web apps: dashboard panel */
+.vApp {
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  overflow: hidden;
+  background: var(--paper-pure);
+  display: grid;
+  grid-template-columns: 26% 1fr;
+  min-height: 132px;
+  transition: transform var(--t-med), border-color var(--t-med);
+}
+.card:hover .vApp { transform: translateY(-3px); border-color: #D8D2C6; }
+.vAppSide {
+  background: #FAF8F4;
+  border-right: 1px solid var(--line-soft);
+  padding: 12px 10px;
+  display: grid;
+  gap: 7px;
+  align-content: start;
+}
+.vAppSide i { height: 5px; border-radius: 3px; background: var(--paper-warm); display: block; }
+.vAppSide i:first-child { background: var(--accent); width: 60%; }
+.vAppSide i:nth-child(2) { width: 84%; }
+.vAppSide i:nth-child(3) { width: 70%; }
+.vAppSide i:nth-child(4) { width: 78%; }
+.vAppMain { padding: 12px; display: grid; gap: 9px; align-content: start; }
+.vAppRow { display: flex; gap: 7px; }
+.vAppTile {
+  flex: 1;
+  height: 26px;
+  border: 1px solid var(--line-soft);
+  border-radius: 5px;
+  background: #FCFBF9;
+}
+.vAppTile:first-child { border-color: rgba(244,123,32,.28); background: rgba(244,123,32,.06); }
+.vAppChart { display: flex; align-items: flex-end; gap: 4px; height: 52px; }
+.vAppChart i {
+  flex: 1;
+  background: var(--paper-warm);
+  border-radius: 2px 2px 0 0;
+  display: block;
+  transition: background var(--t-med), transform var(--t-med);
+  transform-origin: bottom;
+}
+.card:hover .vAppChart i { transform: scaleY(1.06); }
+.vAppChart i:nth-child(3n) { background: var(--accent); }
+
+/* 03 — Mobile: paired phones */
+.vPhones {
+  position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: flex-end;
+  padding-top: 12px;
+  min-height: 0;
+}
+.vPhoneA, .vPhoneB { transition: transform var(--t-slow); }
+.vPhoneA {
+  width: 46%;
+  transform: rotate(-5deg) translateX(14%);
+  z-index: 1;
+}
+.vPhoneB {
+  width: 52%;
+  transform: rotate(4deg) translateX(-10%);
+  z-index: 2;
+  margin-left: -12%;
+}
+.card:hover .vPhoneA { transform: rotate(-8deg) translate(6%, -6px); }
+.card:hover .vPhoneB { transform: rotate(6deg) translate(-4%, -10px); }
+
+/* 04 — UI/UX: artboards + measurements */
+.vUx {
+  position: relative;
+  min-height: 132px;
+  border: 1px dashed var(--line);
+  border-radius: var(--r-md);
+  background:
+    linear-gradient(to right, var(--line-soft) 1px, transparent 1px) 0 0 / 22px 22px,
+    linear-gradient(to bottom, var(--line-soft) 1px, transparent 1px) 0 0 / 22px 22px,
+    #FDFCFA;
+  overflow: hidden;
+  padding: 14px;
+}
+.vUxBoard {
+  position: absolute;
+  border: 1px solid var(--ink);
+  border-radius: 6px;
+  background: var(--paper-pure);
+  box-shadow: var(--sh-1);
+  transition: transform var(--t-med);
+}
+.vUxBoardA { left: 12%; top: 16%; width: 42%; height: 58%; }
+.vUxBoardB {
+  left: 38%; top: 32%; width: 46%; height: 56%;
+  border-color: var(--accent);
+  background: rgba(244,123,32,.06);
+}
+.card:hover .vUxBoardA { transform: translate(-6px, -4px); }
+.card:hover .vUxBoardB { transform: translate(6px, 4px); }
+.vUxMeasure {
+  position: absolute;
+  left: 12%; right: 16%;
+  bottom: 8%;
+  height: 1px;
+  background: var(--accent);
+}
+.vUxMeasure::before, .vUxMeasure::after {
+  content: "";
+  position: absolute;
+  top: -3px;
+  width: 1px;
+  height: 7px;
+  background: var(--accent);
+}
+.vUxMeasure::before { left: 0; }
+.vUxMeasure::after { right: 0; }
+.vUxSwatches { position: absolute; right: 8%; top: 10%; display: grid; gap: 5px; }
+.vUxSwatches i {
+  width: 15px; height: 15px;
+  border-radius: 3px;
+  display: block;
+  border: 1px solid rgba(17,18,20,.1);
+  transition: transform var(--t-med);
+}
+.vUxSwatches i:nth-child(1) { background: var(--ink); }
+.vUxSwatches i:nth-child(2) { background: var(--accent); }
+.vUxSwatches i:nth-child(3) { background: var(--paper-warm); }
+.card:hover .vUxSwatches i:nth-child(2) { transform: translateX(-5px); }
+
+/* 05 — Digital products: idea → launch diagram */
+.vFlow {
+  position: relative;
+  border: 1px solid var(--line);
+  border-radius: var(--r-md);
+  background: linear-gradient(180deg, #FDFCFA, #F6F3ED);
+  padding: clamp(18px, 2.4vw, 28px);
+  overflow: hidden;
+}
+.vFlowTrack {
+  position: relative;
+  display: grid;
+  grid-template-columns: repeat(5, 1fr);
+  gap: 8px;
+  align-items: center;
+}
+.vFlowTrack::before {
+  content: "";
+  position: absolute;
+  left: 8%; right: 8%;
+  top: 15px;
+  height: 1px;
+  background: repeating-linear-gradient(90deg, var(--line) 0 5px, transparent 5px 10px);
+}
+.vFlowNode { position: relative; display: grid; gap: 8px; justify-items: center; text-align: center; }
+.vFlowDot {
+  width: 30px; height: 30px;
+  border-radius: 50%;
+  border: 1px solid var(--line);
+  background: var(--paper-pure);
+  display: grid;
+  place-items: center;
+  font-family: var(--font-mono), monospace;
+  font-size: .625rem;
+  color: var(--muted);
+  position: relative;
+  z-index: 1;
+  transition: border-color var(--t-med), color var(--t-med), background var(--t-med), transform var(--t-med);
+}
+.card:hover .vFlowNode:nth-child(1) .vFlowDot,
+.card:hover .vFlowNode:nth-child(5) .vFlowDot {
+  border-color: var(--accent);
+  color: #fff;
+  background: var(--accent);
+  transform: scale(1.08);
+}
+.vFlowLabel {
+  font-family: var(--font-mono), monospace;
+  font-size: .594rem;
+  letter-spacing: .12em;
+  text-transform: uppercase;
+  color: var(--muted);
+}
+
+/* ---------- Responsive ---------- */
+@media (max-width: 1000px) {
+  .grid {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+    grid-template-areas:
+      "web web mob mob"
+      "app app ux  ux"
+      "prd prd prd prd";
+  }
+  .aWebsites { grid-template-columns: 1fr; align-items: stretch; }
+  .aProduct { grid-template-columns: 1fr; }
+  .vPhones { min-height: 190px; }
+}
+@media (max-width: 640px) {
+  .grid {
+    grid-template-columns: 1fr;
+    grid-template-areas: "web" "mob" "app" "ux" "prd";
+    gap: 12px;
+  }
+  .card { padding: 20px; }
+  .vPhones { min-height: 210px; }
+  .vFlowTrack { grid-template-columns: repeat(5, 1fr); gap: 4px; }
+  .vFlowDot { width: 26px; height: 26px; }
+  .vFlowLabel { font-size: .5rem; letter-spacing: .06em; }
+}

@@ -1,0 +1,79 @@
+.wrap {
+  position: relative;
+  width: 100%;
+  height: 100%;
+  overflow: hidden;
+  background: var(--paper-warm);
+}
+
+.slide {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+  transition: opacity .75s var(--e-out);
+}
+.slide[data-on="true"] { opacity: 1; }
+.slide img {
+  object-fit: cover;
+  /* Screens are captured top-aligned, so a shorter frame crops the footer
+     rather than the header — which is what a real viewport would show. */
+  object-position: top center;
+}
+
+/* Dots scale with the frame via container queries, so the same markup works
+   inside a 1000px browser mock and a 100px phone mock. */
+.dots {
+  position: absolute;
+  left: 50%;
+  bottom: clamp(6px, 2.6cqi, 14px);
+  transform: translateX(-50%);
+  z-index: 4;
+  display: flex;
+  align-items: center;
+  gap: clamp(3px, 1.1cqi, 6px);
+  padding: clamp(3px, 1.1cqi, 6px) clamp(5px, 1.8cqi, 10px);
+  border-radius: 999px;
+  background: rgba(11, 12, 14, .46);
+  -webkit-backdrop-filter: blur(8px);
+  backdrop-filter: blur(8px);
+  opacity: 0;
+  transition: opacity var(--t-med);
+}
+.wrap:hover .dots,
+.wrap:focus-within .dots,
+.dots[data-always="true"] { opacity: 1; }
+
+.dot {
+  width: clamp(4px, 1.5cqi, 7px);
+  height: clamp(4px, 1.5cqi, 7px);
+  border-radius: 999px;
+  background: rgba(255, 255, 255, .5);
+  padding: 0;
+  transition: background var(--t-med), width var(--t-med);
+}
+.dot[data-on="true"] {
+  background: #fff;
+  width: clamp(12px, 4.4cqi, 20px);
+}
+.dot:focus-visible { outline: 2px solid var(--accent); outline-offset: 2px; }
+
+/* Empty state — only shown if no screenshot files are present at all. */
+.empty {
+  position: absolute;
+  inset: 0;
+  display: grid;
+  place-items: center;
+  gap: 8px;
+  background: linear-gradient(160deg, #FBFAF7, #EFECE5);
+  color: var(--muted);
+  font-family: var(--font-mono), monospace;
+  font-size: clamp(8px, 2.4cqi, 12px);
+  letter-spacing: .14em;
+  text-transform: uppercase;
+  text-align: center;
+  padding: 8%;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .slide { transition: none; }
+}
