@@ -42,3 +42,6 @@ next-env.d.ts
 
 # Keep the placeholder file tracked so setup is self-documenting.
 !.env.example
+
+# Company documents / stationery (generated locally, not part of the site)
+docs/
