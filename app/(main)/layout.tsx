@@ -1,7 +1,7 @@
 import Nav from "@/components/site/Nav";
 import Footer from "@/components/site/Footer";
 import CursorHalo from "@/components/site/CursorHalo";
-import { LogoGradient } from "@/components/site/Logo";
+import { COMPANY, SITE_URL } from "@/lib/site";
 
 /**
  * Chrome for the Rexovi site itself.
@@ -14,8 +14,13 @@ import { LogoGradient } from "@/components/site/Logo";
 const orgJsonLd = {
   "@context": "https://schema.org",
   "@type": "Organization",
-  name: "Rexovi Technologies",
-  url: "https://rexovi.com",
+  name: COMPANY.name,
+  legalName: COMPANY.legalName,
+  url: SITE_URL,
+  logo: `${SITE_URL}/brand/rexovi-logo.png`,
+  foundingDate: COMPANY.founded,
+  identifier: { "@type": "PropertyValue", propertyID: "CIN", value: COMPANY.cin },
+  address: { "@type": "PostalAddress", addressRegion: COMPANY.region, addressCountry: COMPANY.country },
   description:
     "Rexovi Technologies is a digital technology company building websites, web applications, mobile applications, UI/UX and digital products.",
   makesOffer: [
@@ -41,7 +46,6 @@ export default function MainLayout({ children }: { children: React.ReactNode }) 
       <a className="skip-link" href="#main">
         Skip to content
       </a>
-      <LogoGradient />
       <CursorHalo />
       <Nav />
       <main id="main">{children}</main>

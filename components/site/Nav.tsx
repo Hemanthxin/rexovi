@@ -71,7 +71,7 @@ export default function Nav() {
       <header className={s.header} data-stuck={stuck} data-tone={tone}>
         <div className={s.inner} ref={barRef}>
           <Link href="/" className={s.logo} aria-label="Rexovi Technologies — home">
-            <Logo size={24} />
+            <Logo height={34} tone={tone === "void" ? "light" : "ink"} priority />
           </Link>
 
           <nav className={s.links} aria-label="Primary">
@@ -113,7 +113,7 @@ export default function Nav() {
       >
         <div className={s.drawerTop}>
           <Link href="/" className={s.logo} aria-label="Rexovi Technologies — home">
-            <Logo size={24} />
+            <Logo height={34} />
           </Link>
           <button type="button" className={s.drawerClose} aria-label="Close menu" onClick={() => setOpen(false)}>
             <Close size={18} />

@@ -1,6 +1,7 @@
 import Link from "next/link";
 import { ArrowRight, Instagram, LinkedIn, XMark } from "./Icons";
 import Logo from "./Logo";
+import { COMPANY } from "@/lib/site";
 import s from "./Footer.module.css";
 
 const columns = [
@@ -39,7 +40,7 @@ export default function Footer() {
         <div className={s.grid}>
           <div className={s.brandCol}>
             <div className={s.brandRow}>
-              <Logo variant="full" size={34} tagline />
+              <Logo height={64} tone="light" />
             </div>
             <p className={s.brandLine}>
               Digital products. Websites. Mobile experiences. We build the things we would want to
@@ -92,7 +93,9 @@ export default function Footer() {
 
       <div className="wrap">
         <div className={s.bottom}>
-          <span>© 2026 Rexovi Technologies. All rights reserved.</span>
+          <span>
+            © 2026 {COMPANY.legalName}. All rights reserved. · CIN {COMPANY.cin}
+          </span>
           <div className={s.social}>
             {socials.map(({ label, href, Icon }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>

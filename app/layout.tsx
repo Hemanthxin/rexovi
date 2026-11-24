@@ -2,6 +2,7 @@ import type { Metadata, Viewport } from "next";
 import { Bricolage_Grotesque, Inter, Instrument_Serif, JetBrains_Mono } from "next/font/google";
 import "./globals.css";
 import "./previews.css";
+import { SITE_URL } from "@/lib/site";
 
 const display = Bricolage_Grotesque({
   variable: "--font-display",
@@ -31,7 +32,7 @@ const serif = Instrument_Serif({
   display: "swap",
 });
 
-const SITE = "https://rexovi.com";
+const SITE = SITE_URL;
 
 export const metadata: Metadata = {
   metadataBase: new URL(SITE),

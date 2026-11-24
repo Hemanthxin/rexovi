@@ -83,14 +83,31 @@ lib/
 
 ### Brand identity
 
-The logo is rebuilt as vector + live text in [`components/site/Logo.tsx`](components/site/Logo.tsx), not a bitmap:
+The site uses the official logo artwork from `public/brand/` (transparent PNGs), rendered by
+[`components/site/Logo.tsx`](components/site/Logo.tsx) through `next/image`:
 
-- **The mark** — the R with its dissolving pixel fragments — is inline SVG filled from a single gradient defined once in the root layout (`<LogoGradient />`), so it is crisp at any size and costs no request.
-- **The wordmark** is real text: `RE<span>X</span>OVI` with the X carrying the brand gradient. It stays selectable, searchable and screen-reader readable, and inverts automatically on dark sections.
-- `variant="full"` adds the TECHNOLOGIES line; `tagline` adds the **Ideas · Design · Build** rule. The footer uses both.
-- `app/icon.svg` is the favicon, built from the same mark.
+| File | Use |
+|---|---|
+| `rexovi-logo.png` | Full lockup with dark wordmark — light backgrounds (nav, drawer) |
+| `rexovi-logo-white.png` | Full lockup with light wordmark — dark backgrounds (footer, Saafera nav) |
+| `rexovi-mark.png` | The R mark alone (`<LogoMark />`) |
 
-The mark is a faithful reconstruction rather than the original artwork. **If you have the logo as vector, drop it at `public/brand/rexovi-mark.svg` and swap the `<svg>` body in `LogoMark`** — everything else (sizing, colour, placement) already works around it.
+`<Logo height={38} tone="ink" | "light" />` picks the right file; width follows the artwork's
+aspect ratio. `app/icon.png` and `app/apple-icon.png` are the favicons, built from the mark.
+
+**Legal entity:** Rexovi Technologies (OPC) Private Limited · CIN U58201KA2026OPC231735. The
+legal name and CIN live in `lib/site.ts` and appear in the footer and the Organization JSON-LD.
+
+### Certificate verification
+
+Every Rexovi certificate carries a Certificate ID (`RXV-CERT-<YYYY>-<NNN>`) and a QR code that
+opens `/verify/<ID>`, which shows the holder's name, certificate type, details and issue date.
+`/verify` also has a manual lookup form.
+
+The register is [`lib/certificates.ts`](lib/certificates.ts) — only IDs listed there verify.
+Certificates are issued with the document tools (`docs/tools/issue.js` next to this repo), which
+render the personalised PDF/DOCX with its own QR code and append the record to the register.
+Commit and deploy after issuing so the QR resolves. Set `revoked: true` on an entry to revoke it.
 
 ### The preview engine — why there are almost no images
 
@@ -437,10 +454,11 @@ A few values are placeholders that only the business can confirm:
 2. **Contact form delivery is live** — briefs are stored in Neon. Consider adding an
    email or Slack notification on insert so nobody has to poll the table.
 3. **Social URLs** in `components/site/Footer.tsx` currently point at the platform roots.
-4. **`https://rexovi.com`** is set as the canonical origin in `app/layout.tsx`,
-   `app/sitemap.ts` and `app/robots.ts`.
-5. **The logo mark** in `LogoMark` is a reconstruction. Supply the original vector for
-   pixel-exact fidelity (see **Brand identity** above).
+4. **Site origin** comes from `lib/site.ts` — `https://rexovi.vercel.app` by default. Set
+   `NEXT_PUBLIC_SITE_URL` (e.g. `https://rexovitechnologies.com`) in Vercel when the custom
+   domain is live; canonical URLs, sitemap, robots and JSON-LD all follow it.
+5. **The logo** is the official artwork as PNG. Swap in an SVG version under `public/brand/`
+   if one becomes available (see **Brand identity** above).
 6. **Template preview URLs** (`finora.rexovi.com` etc.) are shown in the mock browser
    chrome only — they are illustrative. Set `demoPath` when real demos are hosted.
 7. **Open Graph images** are not included; add `app/opengraph-image.tsx` when brand

@@ -4,6 +4,7 @@ import Reveal from "@/components/site/Reveal";
 import Tilt from "@/components/site/Tilt";
 import { ArrowRight, ArrowUpRight, Layers } from "@/components/site/Icons";
 import { capabilities } from "@/lib/content";
+import { SITE_HOST } from "@/lib/site";
 import s from "./Hero.module.css";
 
 /* Floating ecosystem nodes orbiting the console. */
@@ -89,7 +90,7 @@ export default function Hero() {
           {/* ---------- Ecosystem stage ---------- */}
           <Reveal className={s.stage} delay={260}>
             <Tilt className={s.stageInner}>
-              <BrowserFrame url="rexovi.com/console" ratio="16 / 11" className={s.console}>
+              <BrowserFrame url={`${SITE_HOST}/console`} ratio="16 / 11" className={s.console}>
                 <div className={s.cs}>
                   <div className={s.csTop}>
                     <span className={s.csTitle}>Rexovi Console</span>

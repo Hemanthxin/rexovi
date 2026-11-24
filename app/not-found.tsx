@@ -19,7 +19,7 @@ export default function NotFound() {
           </div>
           <div style={{ display: "grid", gap: 24 }}>
             <p className="lead">
-              The link you followed doesn&apos;t lead anywhere on rexovi.com. The workshop is still
+              The link you followed doesn&apos;t lead anywhere on this site. The workshop is still
               open, though — try one of these instead.
             </p>
             <div className="row">

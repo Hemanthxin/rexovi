@@ -1,6 +1,5 @@
 import type { MetadataRoute } from "next";
-
-const SITE = "https://rexovi.com";
+import { SITE_URL as SITE } from "@/lib/site";
 
 export default function sitemap(): MetadataRoute.Sitemap {
   const routes: { path: string; priority: number; freq: "weekly" | "monthly" }[] = [
@@ -10,6 +9,7 @@ export default function sitemap(): MetadataRoute.Sitemap {
     { path: "/work", priority: 0.8, freq: "monthly" },
     { path: "/about", priority: 0.7, freq: "monthly" },
     { path: "/contact", priority: 0.7, freq: "monthly" },
+    { path: "/verify", priority: 0.4, freq: "monthly" },
   ];
 
   const lastModified = new Date("2026-01-01");

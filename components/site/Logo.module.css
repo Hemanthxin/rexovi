@@ -1,71 +1,13 @@
 .lockup {
-  display: inline-flex;
-  align-items: center;
-  gap: 9px;
-  line-height: 1;
+  display: block;
+  width: auto;
+  max-width: 100%;
+  user-select: none;
 }
-.lockup[data-variant="full"] { align-items: flex-start; }
 
 .mark {
   flex: none;
   display: block;
+  width: auto;
   transition: transform .5s var(--e-out);
-}
-.lockup:hover .mark { transform: translateX(-2px) rotate(-2deg); }
-
-.text { display: grid; gap: 3px; }
-
-/* Heavy grotesk wordmark with the brand-orange X, as live text. */
-.word {
-  font-family: var(--font-display), sans-serif;
-  font-weight: 700;
-  font-size: 1.06rem;
-  letter-spacing: .012em;
-  line-height: 1;
-  white-space: nowrap;
-}
-.x {
-  color: var(--accent);
-  /* Matches the gradient in the mark rather than sitting flat. */
-  background: linear-gradient(135deg, var(--accent-2), var(--accent-deep));
-  -webkit-background-clip: text;
-  background-clip: text;
-  -webkit-text-fill-color: transparent;
-}
-
-.sub {
-  font-family: var(--font-mono), monospace;
-  font-size: .5rem;
-  font-weight: 500;
-  letter-spacing: .34em;
-  text-transform: uppercase;
-  opacity: .58;
-  white-space: nowrap;
-}
-
-.tagline {
-  display: inline-flex;
-  align-items: center;
-  gap: 7px;
-  margin-top: 4px;
-  font-family: var(--font-mono), monospace;
-  font-size: .594rem;
-  letter-spacing: .16em;
-  text-transform: uppercase;
-  opacity: .72;
-  white-space: nowrap;
-}
-.tagline b { color: var(--accent); font-weight: 700; }
-.tagline i {
-  display: block;
-  width: 16px;
-  height: 1px;
-  background: var(--accent);
-  opacity: .8;
-  flex: none;
-}
-
-@media (max-width: 760px) {
-  .sub { font-size: .625rem; letter-spacing: .28em; }
-  .tagline { font-size: .688rem; }
 }
