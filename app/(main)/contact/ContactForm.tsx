@@ -1,5 +1,6 @@
 "use client";
 
+import Link from "next/link";
 import { useSearchParams } from "next/navigation";
 import { useMemo, useState, type FormEvent } from "react";
 import { ArrowRight } from "@/components/site/Icons";
@@ -328,7 +329,11 @@ export default function ContactForm() {
           </p>
         ) : (
           <p className={s.footNote}>
-            Sent straight to the Rexovi team. We never share your details.
+            Sent straight to the Rexovi team. We never sell your details — see our{" "}
+            <Link href="/privacy" className="tlink">
+              Privacy Policy
+            </Link>
+            .
           </p>
         )}
         <button type="submit" className="btn btn--accent" disabled={status === "sending"}>

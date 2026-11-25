@@ -163,3 +163,8 @@
   .col a { width: 100%; }
   .tagInline { font-size: .625rem; }
 }
+
+/* Legal links in the bottom row */
+.legal { display: flex; flex-wrap: wrap; gap: 6px 18px; margin-right: auto; }
+.legal a { color: #9AA0A8; transition: color var(--t-med); }
+.legal a:hover { color: #fff; }

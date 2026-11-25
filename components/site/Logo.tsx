@@ -44,18 +44,32 @@ interface LogoProps {
   tone?: "ink" | "light";
   priority?: boolean;
   className?: string;
+  /** Adds the "(OPC) Private Limited" line under the lockup. */
+  legal?: boolean;
 }
 
-export default function Logo({ height = 36, tone = "ink", priority = false, className = "" }: LogoProps) {
+export default function Logo({ height = 36, tone = "ink", priority = false, className = "", legal = false }: LogoProps) {
   const src = tone === "light" ? logoWhite : logoInk;
-  return (
+  const img = (
     <Image
       src={src}
-      alt="Rexovi Technologies"
+      alt={legal ? "Rexovi Technologies (OPC) Private Limited" : "Rexovi Technologies"}
       height={height}
       width={Math.round((height * src.width) / src.height)}
       priority={priority}
-      className={`${s.lockup}${className ? ` ${className}` : ""}`}
+      className={`${s.lockup}${!legal && className ? ` ${className}` : ""}`}
     />
+  );
+  if (!legal) return img;
+  return (
+    <span
+      className={`${s.withLegal}${className ? ` ${className}` : ""}`}
+      style={{ ["--legal-size" as string]: `${Math.max(7, Math.round(height * 0.17 * 10) / 10)}px` }}
+    >
+      {img}
+      <span className={s.legalLine} aria-hidden>
+        (OPC) Private Limited
+      </span>
+    </span>
   );
 }

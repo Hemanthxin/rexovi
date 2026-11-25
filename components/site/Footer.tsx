@@ -40,7 +40,7 @@ export default function Footer() {
         <div className={s.grid}>
           <div className={s.brandCol}>
             <div className={s.brandRow}>
-              <Logo height={64} tone="light" />
+              <Logo height={64} tone="light" legal />
             </div>
             <p className={s.brandLine}>
               Digital products. Websites. Mobile experiences. We build the things we would want to
@@ -96,6 +96,11 @@ export default function Footer() {
           <span>
             © 2026 {COMPANY.legalName}. All rights reserved. · CIN {COMPANY.cin}
           </span>
+          <nav className={s.legal} aria-label="Legal">
+            <Link href="/privacy">Privacy</Link>
+            <Link href="/terms">Terms</Link>
+            <Link href="/verify">Verify a certificate</Link>
+          </nav>
           <div className={s.social}>
             {socials.map(({ label, href, Icon }) => (
               <a key={label} href={href} target="_blank" rel="noopener noreferrer" aria-label={label}>

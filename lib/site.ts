@@ -13,3 +13,12 @@ export const COMPANY = {
   region: "Karnataka",
   country: "IN",
 } as const;
+
+/**
+ * Public contact / grievance email for the legal pages. Set NEXT_PUBLIC_CONTACT_EMAIL
+ * once a mailbox exists; until then the pages point people to the contact form.
+ */
+export const LEGAL_EMAIL = process.env.NEXT_PUBLIC_CONTACT_EMAIL || null;
+
+/** Date the privacy policy and terms were last revised. */
+export const LEGAL_UPDATED = "25 November 2026";
